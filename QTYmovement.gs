@@ -30,16 +30,7 @@ base.updateData(item,orig1);
 }
 }
 
-function fromRunningtoCompleted(item, value){
 
-var orig1=base.getData(item);
-if(orig1){
-orig1.Running= orig1.Running-value;
-orig1.Completed= orig1.Completed+value;
-
-base.updateData(item,orig1);
-}
-}
 function toRunning(page,value){
   
   
@@ -183,8 +174,8 @@ function BtoCompleteX(batch,value){
 
 
 
-function fromReservedtoRunning(batch,value){
- 
+function fromReservedToRunning(batch,value){
+
 var orig1=base.getData(batch);
 if(orig1){
 orig1.Running+=value;
@@ -196,7 +187,7 @@ base.updateData(batch,orig1);
 }
 
 
-function fromCompletedtoRunning(batch,value){
+function fromCompletedToRunning(batch,value){
 
 var orig1=base.getData(batch);
 if(orig1){

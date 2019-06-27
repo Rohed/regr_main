@@ -21,10 +21,13 @@ function saveItem(data) {
       if (data.paiddate) {
         data.paiddate=new Date(data.paiddate).getTime();
       }
-      
- 
-        var QTYitem = base.getData(data.page + '/' + data.sku);
-    
+   
+          if (data.page == 'Misc') {
+           var QTYitem = base.getData(data.page + '/' + data.desc);
+        } else {
+           
+              var QTYitem = base.getData(data.page + '/' + data.sku);
+        }
       if (!QTYitem.Stock) {
         QTYitem.Stock = 0;
       }
@@ -42,9 +45,11 @@ function saveItem(data) {
                 data.name = data.desc + " " + data.orderdate + " " + data.quantity;
                 base.removeData('Inventory/' + data.key);
                 base.updateData('Inventory/' + data.key, data);
-              
+                if (data.page == 'Misc') {
+                   base.updateData(data.page + '/' + data.desc, QTYitem); 
+                } else {
                     base.updateData(data.page + '/' + data.sku, QTYitem);
-              
+                }
                 logItem(LOGDATA);
                 return data.name+" saved and added to QTY Running.";
             }else if(olddat.delivdate!=data.delivdate){
@@ -56,9 +61,11 @@ function saveItem(data) {
                 data.name = data.desc + " " + data.orderdate + " " + data.quantity;
                 base.removeData('Inventory/' + data.key);
                 base.updateData('Inventory/' + data.key, data);
-               
+                if (data.page == 'Misc') {
+                   base.updateData(data.page + '/' + data.desc, QTYitem); 
+                } else {
                     base.updateData(data.page + '/' + data.sku, QTYitem);
-               
+                }
                 logItem(LOGDATA);
                 return data.name+" saved and added to QTY Running.";
             }
@@ -96,9 +103,11 @@ function saveItem(data) {
                 data.name = data.desc + " " + data.orderdate + " " + data.quantity;
                 data.row = max + 1;
                 base.updateData('Inventory/' + data.key, data);
-             
+                if (data.page == 'Misc') {
+                   base.updateData(data.page + '/' + data.desc, QTYitem); 
+                } else {
                     base.updateData(data.page + '/' + data.sku, QTYitem);
-               
+                }
                 logItem(LOGDATA);
                 return data.name+" saved and added to QTY Running.";
             } else {
@@ -109,9 +118,12 @@ function saveItem(data) {
                 data.row = max + 1;
                 base.updateData('Inventory/' + data.key, data);
 
-           
+                if (data.page == 'Misc') {
+            base.updateData(data.page + '/' + data.desc, QTYitem);
+                } else {
           base.updateData(data.page + '/' + data.sku, QTYitem);
-        
+                    
+                }
                 logItem(LOGDATA);
                 return data.name+" saved and added to QTY Stock.";
 

@@ -42,9 +42,8 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">New Order</h4>
-                <button type='button' class="btn btn-primary" id='newOrder'>Customer Order</button>
-                <button type='button' class="btn btn-primary" id='newOrderStock'>Stock Order</button>
-               
+                <button type='button' class="btn btn-primary" id='newOrder'>Order</button>
+                <button type='button' class="btn btn-primary" id='newflavourmixOrder'>Flavour Mix</button>
             </div>
             <div class="modal-body">
 
@@ -52,6 +51,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button id='subModalForm' type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                <button id='subflavourmixFormOrder' type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
             </div>
         </div>
 
@@ -77,8 +77,6 @@
                             <h4>Delivery Date</h4></td>
                         <td>
                             <h4>Paid Date</h4></td>
-                        <td>
-                            <h4>ETA / Days</h4></td>
                     </tr>
 
                     <tr>
@@ -109,25 +107,21 @@
                                 <input type="date" id="paiddate" class="form-control" placeholder="Paid Date" aria-describedby="sizing-addon2">
                             </div>
                         </td>
-                          <td>
-                            <div class="input-group">
-                                <input type="text" id="eta" class="form-control" placeholder="ETA / Days" aria-describedby="sizing-addon2">
-                            </div>
-                        </td>
                     </tr>
                     <tr>
-                   
+                        <td>
+                            <h4>ETA / Days</h4></td>
                         <td>
                             <h4>Order Quantity</h4></td>
                         <td>
                             <h4>Note</h4></td>
-                            <td>
-                            <h4>Serum Batch Code</h4></td>
-                            <td>
-                            <h4>Stimulant Batch Code</h4></td>
                     </tr>
                     <tr>
-                      
+                        <td>
+                            <div class="input-group">
+                                <input type="text" id="eta" class="form-control" placeholder="ETA / Days" aria-describedby="sizing-addon2">
+                            </div>
+                        </td>
                         <td>
                             <div class="input-group">
                                 <input type="text" id="quantity" class="form-control" placeholder="Order Quantity (ml -ink,vg,pg,Nicotine else Litres/Bottles)" aria-describedby="sizing-addon2">
@@ -136,16 +130,6 @@
                         <td>
                             <div class="input-group">
                                 <input type="text" id="note" class="form-control" placeholder="Note" aria-describedby="sizing-addon2">
-                            </div>
-                        </td>
-                             <td>
-                            <div class="input-group">
-                                <input type="text" id="serumBatchCode" class="form-control" placeholder="Serum Batch" aria-describedby="sizing-addon2">
-                            </div>
-                        </td>
-                             <td>
-                            <div class="input-group">
-                                <input type="text" id="stimulantBatchCode" class="form-control" placeholder="Stimulant Batch" aria-describedby="sizing-addon2">
                             </div>
                         </td>
                     </tr>
@@ -1259,6 +1243,12 @@
                         <input type="checkbox" page='Orders' name='expCheckbox' class="form-check-input"> Orders
                     </label>
                     <label class="form-check-label">
+                        <input type="checkbox" page='Mixing' name='expCheckbox' class="form-check-input"> Mixing
+                    </label>
+                    <label class="form-check-label">
+                        <input type="checkbox" page='MixingTeam' name='expCheckbox' class="form-check-input"> Mixing Team
+                    </label>
+                    <label class="form-check-label">
                         <input type="checkbox" page='Production' name='expCheckbox' class="form-check-input"> Production
                     </label>
                     <label class="form-check-label">
@@ -1289,10 +1279,16 @@
                         <input type="checkbox" page='Packages' name='expCheckbox' class="form-check-input"> Packages
                     </label>
                     <label class="form-check-label">
+                        <input type="checkbox" page='Recipes' name='expCheckbox' class="form-check-input"> Recipes
+                    </label>
+                    <label class="form-check-label">
                         <input type="checkbox" page='Boxes' name='expCheckbox' class="form-check-input"> Boxes
                     </label>
                     <label class="form-check-label">
                         <input type="checkbox" page='Customers' name='expCheckbox' class="form-check-input"> Customers
+                    </label>
+                    <label class="form-check-label">
+                        <input type="checkbox" page='Flavours' name='expCheckbox' class="form-check-input"> Flavours
                     </label>
                     <label class="form-check-label">
                         <input type="checkbox" page='Lids' name='expCheckbox' class="form-check-input"> Caps
@@ -1304,7 +1300,13 @@
                         <input type="checkbox" page='Brands' name='expCheckbox' class="form-check-input"> Brands
                     </label>
                     <label class="form-check-label">
+                        <input type="checkbox" page='FlavourMixes' name='expCheckbox' class="form-check-input"> Flavour Mixes
+                    </label>
+                    <label class="form-check-label">
                         <input type="checkbox" page='Labels' name='expCheckbox' class="form-check-input"> Labels
+                    </label>
+                    <label class="form-check-label">
+                        <input type="checkbox" page='Color' name='expCheckbox' class="form-check-input"> Colors
                     </label>
                 </div>
 
@@ -1692,6 +1694,8 @@
                     <tr>
                         <td>Code</td>
                         <td>Description</td>
+                        <td>Linked Code</td>
+                        <td>Recipe</td>
                         <td>Brand</td>
                         <td>Price</td>
                     </tr>
@@ -1707,6 +1711,14 @@
                             </div>
                         </td>
                         <td>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="NlinkedBB" placeholder="Linked Item" aria-describedby="sizing-addon2" />
+                            </div>
+                        </td>
+                        <td>
+                            <select class="form-control" id='newPCDrecipe'></select>
+                        </td>
+                        <td>
                             <select class="form-control" id='newPCDbrand'></select>
                         </td>
                         <td><div class="input-group">
@@ -1714,20 +1726,19 @@
                             </div></td>
                     </tr>
                     <tr>
+                        <td>Flavour</td>
                         <td>Bottle</td>
-                        <td>Tube</td>
                         <td>Cap</td>
                         <td>Packaging</td>
                         <td>Fill ammount</td>
-                        
-                        
+                        <td></td>
                     </tr>
                     <tr>
                         <td>
-                            <select class="form-control" id='newPCDbottle'></select>
+                            <select class="form-control" id='newPCDflavour'></select>
                         </td>
-                         <td>
-                            <select class="form-control" id='newPCDtube'></select>
+                        <td>
+                            <select class="form-control" id='newPCDbottle'></select>
                         </td>
                         <td>
                             <select class="form-control" id='newPCDcap'></select>
@@ -1740,75 +1751,58 @@
                                 <input class="form-control" type="text" id='newPCDfill' aria-describedby="sizing-addon2" />
                             </div>
                         </td>
-                    
+                        <td></td>
                     </tr>
                     <tr>
-                        <td>Premix SKU Serum</td>
-                        <td>Premix Name Serum</td>
-                        <td>Premix SKU Stimulant</td>
-                        <td>Premix Name Stimulant</td>
-                    
+                        <td>Premix SKU</td>
+                        <td>Premix Name</td>
+                        <td>Colored Premix SKU</td>
+                        <td>Colored Premix Name</td>
+                        <td>Unbranded SKU</td>
+                        <td>Unbranded Name</td>
                     </tr>
                     <tr>
 
                         <td>
                             <div class="input-group">
-                                <input class="form-control" type="text" id='newpremixSKUSerum' aria-describedby="sizing-addon2" />
+                                <input class="form-control" type="text" id='newpremixSKU' aria-describedby="sizing-addon2" />
                             </div>
                         </td>
                         <td>
                             <div class="input-group">
-                                <input class="form-control" type="text" id='newpremixdescrSerum' aria-describedby="sizing-addon2" />
-                            </div>
-                        </td>
-                        
-                        
-                        <td>
-                            <div class="input-group">
-                                <input class="form-control" type="text" id='newpremixSKUStimulant' aria-describedby="sizing-addon2" />
+                                <input class="form-control" type="text" id='newpremixdescr' aria-describedby="sizing-addon2" />
                             </div>
                         </td>
                         <td>
                             <div class="input-group">
-                                <input class="form-control" type="text" id='newpremixdescrStimulant' aria-describedby="sizing-addon2" />
+                                <input class="form-control" type="text" id='newpremixSKUColored' aria-describedby="sizing-addon2" />
                             </div>
                         </td>
-                        
-                        
-                     
+                        <td>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id='newpremixdescrColored' aria-describedby="sizing-addon2" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id='newunbrandSKU' aria-describedby="sizing-addon2" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id='newunbranddescr' aria-describedby="sizing-addon2" />
+                            </div>
+                        </td>
 
                     </tr>
-                    <tr> 
-                    <td>Use Comb</td>
-                    <td>Bottle/Tube Multiplier</td>
-                    <td>Comb Multiplier</td>
-                    
-                    </tr>
-                    <tr>
-                           <td>
-                            <div class="input-group">
-                                <input class="form-control" type="checkbox" id='newUseComb' aria-describedby="sizing-addon2" />
-                            </div>
-                        </td>
-                    
-                          <td>
-                            <div class="input-group">
-                                <input class="form-control" type="text" id='newBottleMultiplier' aria-describedby="sizing-addon2" />
-                            </div>
-                        </td>
-                        <td>
-                            <div class="input-group">
-                                <input class="form-control" type="text" id='newCombMultiplier' aria-describedby="sizing-addon2" />
-                            </div>
-                        </td>
-                        
-                    </tr>
+
                     <tr>
                         <td>Box</td>
                         <td>Bottle Label</td>
                         <td>Pre Printed Bottle Label</td>
                         <td>Pack Label</td>
                         <td>Pre Printed Pack Label</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>
@@ -1855,6 +1849,7 @@
                         <td>Code</td>
                         <td>Description</td>
                         <td>Linked Code</td>
+                        <td>Recipe</td>
                         <td>Brand</td>
                         <td>Price</td>
                     </tr>
@@ -1881,6 +1876,9 @@
                             </div>
                         </td>
                         <td>
+                            <select class="form-control" id='editPCDrecipe'></select>
+                        </td>
+                        <td>
                             <select class="form-control" id='editPCDbrand'></select>
                         </td>
                         <td>
@@ -1890,18 +1888,19 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Flavour</td>
                         <td>Bottle</td>
-                         <td>Tube</td>
                         <td>Cap</td>
                         <td>Packaging</td>
                         <td>Fill ammount</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>
-                            <select class="form-control" id='editPCDbottle'></select>
+                            <select class="form-control" id='editPCDflavour'></select>
                         </td>
-                            <td>
-                            <select class="form-control" id='editPCDtube'></select>
+                        <td>
+                            <select class="form-control" id='editPCDbottle'></select>
                         </td>
                         <td>
                             <select class="form-control" id='editPCDcap'></select>
@@ -1917,67 +1916,55 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td>Premix SKU Serum</td>
-                        <td>Premix Name Serum</td>
-                          <td>Premix SKU Stimulant</td>
-                        <td>Premix Name Stimulant</td>
-                        
+                        <td>Premix SKU</td>
+                        <td>Premix Name</td>
+                        <td>Colored Premix SKU</td>
+                        <td>Colored Premix Name</td>
+                        <td>Unbranded SKU</td>
+                        <td>Unbranded Name</td>
                     </tr>
                     <tr>
 
                         <td>
                             <div class="input-group">
-                                <input class="form-control" type="text" id='editpremixSKUSerum' aria-describedby="sizing-addon2" />
+                                <input class="form-control" type="text" id='editpremixSKU' aria-describedby="sizing-addon2" />
                             </div>
                         </td>
                         <td>
                             <div class="input-group">
-                                <input class="form-control" type="text" id='editpremixdescrSerum' aria-describedby="sizing-addon2" />
-                            </div>
-                        </td>
-                        
-                            <td>
-                            <div class="input-group">
-                                <input class="form-control" type="text" id='editpremixSKUStimulant' aria-describedby="sizing-addon2" />
+                                <input class="form-control" type="text" id='editpremixdescr' aria-describedby="sizing-addon2" />
                             </div>
                         </td>
                         <td>
                             <div class="input-group">
-                                <input class="form-control" type="text" id='editpremixdescrStimulant' aria-describedby="sizing-addon2" />
+                                <input class="form-control" type="text" id='editpremixSKUColored' aria-describedby="sizing-addon2" />
                             </div>
                         </td>
-                      
+                        <td>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id='editpremixdescrColored' aria-describedby="sizing-addon2" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id='editunbrandSKU' aria-describedby="sizing-addon2" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id='editunbranddescr' aria-describedby="sizing-addon2" />
+                            </div>
+                        </td>
 
                     </tr>
-                    <tr>
-                     <td>Use Comb</td> 
-                        <td>Bottle/Tube Multiplier</td>
-                        <td>Comb Multiplier</td>
-                    </tr>
-                       <tr>
-                         
-                        <td>
-                            <div class="input-group">
-                                <input class="form-control" type="checkbox" id='editUseComb' aria-describedby="sizing-addon2" />
-                            </div>
-                        </td>
-                                 <td>
-                            <div class="input-group">
-                                <input class="form-control" type="text" id='editBottleMultiplier' aria-describedby="sizing-addon2" />
-                            </div>
-                        </td>
-                        <td>
-                            <div class="input-group">
-                                <input class="form-control" type="text" id='editCombMultiplier' aria-describedby="sizing-addon2" />
-                            </div>
-                        </td>
-                    </tr>
+
                     <tr>
                         <td>Box</td>
                         <td>Bottle Label</td>
                         <td>Pre Printed Bottle Label</td>
                         <td>Pack Label</td>
                         <td>Pre Printed Pack Label</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>

@@ -5,9 +5,8 @@ function getPremixDropdown() {
 }
 
 function getFormData() {
-  var PC = getProductCodes();
-  var PD = PC;
-  
+    var PD = getProductDescriptions();
+    var PC = getProductCodes();
     var recipes = getRecipeDropdown();
     var flavours = getFlavourDropdown();
     var bottletypes = getBottlesDropdown();
@@ -166,21 +165,289 @@ function getOrdersData() {
 function getInventoryDescription() {
     var retArr = [];
 
-  var QTY = ['Misc','Lids','BottleTypes','Packages','Labels','PremixesTypes','BrandedTypes']
- 
-  QTY.map(function(item){
-    var data = base.getData(item);
-    if(data){
-      Object.keys(data).map(function(sku){
-        data[sku].page = item; 
-      })
-      
-      retArr = retArr.concat(JSONtoARR(data));
-    }
-    
-  });
 
-   
+
+    var misc = base.getData('Misc');
+
+    var marr = [];
+    if (misc) {
+        var result = Object.keys(misc).map(function(key) {
+            return [Number(key), misc[key]];
+        });
+
+
+        for (var i = 0; i < result.length; i++) {
+            marr.push(result[i][1]);
+
+        }
+
+    }
+    for (var i = 0; i < marr.length; i++) {
+        if (marr[i].name == 'VG') {
+            retArr.push(marr[i])
+        }
+
+    }
+    for (var i = 0; i < marr.length; i++) {
+        if (marr[i].name == 'AG') {
+            retArr.push(marr[i])
+        }
+
+    }
+    for (var i = 0; i < marr.length; i++) {
+        if (marr[i].name == 'PG') {
+            retArr.push(marr[i])
+        }
+
+    }
+    for (var i = 0; i < marr.length; i++) {
+        if (marr[i].name == 'Nicotine') {
+            retArr.push(marr[i])
+        }
+
+    }
+    for (var i = 0; i < marr.length; i++) {
+        if (marr[i].name == 'Nicotine Salts') {
+            retArr.push(marr[i])
+        }
+
+    }
+    for (var i = 0; i < marr.length; i++) {
+        if (marr[i].name == 'CBD') {
+            retArr.push(marr[i])
+        }
+
+    }
+    for (var i = 0; i < marr.length; i++) {
+        if (marr[i].name == 'MCT') {
+            retArr.push(marr[i])
+        }
+
+    }
+    for (var i = 0; i < marr.length; i++) {
+        if (marr[i].name != 'VG' && marr[i].name != 'PG' && marr[i].name != 'Nicotine Salts' && marr[i].name != 'Nicotine' && marr[i].name != 'CBD' && marr[i].name != 'MCT' && marr[i].name != 'AG') {
+            retArr.push(marr[i])
+        }
+
+    }
+
+
+
+    var n = retArr.length;
+    for (var i = 0; i < n; i++) {
+        retArr[i].page = 'Misc';
+    }
+
+    var labels = base.getData('Labels');
+
+
+
+    if (labels) {
+        var result = Object.keys(labels).map(function(key) {
+            return [Number(key), labels[key]];
+        });
+
+
+        for (var i = 0; i < result.length; i++) {
+            retArr.push(result[i][1]);
+
+        }
+
+    }
+
+
+
+    var l = retArr.length;
+    for (var i = n; i < l; i++) {
+        retArr[i].page = 'Labels';
+    }
+
+
+
+    var boxes = base.getData('Boxes');
+
+
+
+    if (boxes) {
+        var result = Object.keys(boxes).map(function(key) {
+            return [Number(key), boxes[key]];
+        });
+
+
+        for (var i = 0; i < result.length; i++) {
+            retArr.push(result[i][1]);
+
+        }
+
+    }
+
+
+
+    var n = retArr.length;
+    for (var i = l; i < n; i++) {
+        retArr[i].page = 'Boxes';
+    }
+
+
+
+    var packages = base.getData('Packages');
+
+
+
+    if (packages) {
+        var result = Object.keys(packages).map(function(key) {
+            return [Number(key), packages[key]];
+        });
+
+
+        for (var i = 0; i < result.length; i++) {
+            retArr.push(result[i][1]);
+
+        }
+
+    }
+
+
+
+    var l = retArr.length;
+    for (var i = n; i < l; i++) {
+        retArr[i].page = 'Packages';
+    }
+
+
+
+
+    var flavours = base.getData('Flavours');
+
+
+
+    if (flavours) {
+        var result = Object.keys(flavours).map(function(key) {
+            return [Number(key), flavours[key]];
+        });
+
+
+        for (var i = 0; i < result.length; i++) {
+            retArr.push(result[i][1]);
+
+        }
+    }
+
+
+    var n = retArr.length;
+    for (var i = l; i < n; i++) {
+        retArr[i].page = 'Flavours';
+    }
+
+
+
+
+    var bottletypes = base.getData('BottleTypes');
+
+    if (bottletypes) {
+        var result = Object.keys(bottletypes).map(function(key) {
+            return [Number(key), bottletypes[key]];
+        });
+
+
+        for (var i = 0; i < result.length; i++) {
+            retArr.push(result[i][1]);
+
+        }
+
+    }
+
+
+    var l = retArr.length;
+    for (var i = n; i < l; i++) {
+        retArr[i].page = 'BottleTypes';
+    }
+
+
+    var lids = base.getData('Lids');
+    if (lids) {
+        var result = Object.keys(lids).map(function(key) {
+            return [Number(key), lids[key]];
+        });
+
+
+        for (var i = 0; i < result.length; i++) {
+            retArr.push(result[i][1]);
+
+        }
+    }
+
+
+    var n = retArr.length;
+    for (var i = l; i < n; i++) {
+        retArr[i].page = 'Lids';
+    }
+
+
+
+
+    var premixes = base.getData('PremixesTypes');
+
+    if (premixes) {
+        var result = Object.keys(premixes).map(function(key) {
+            return [Number(key), premixes[key]];
+        });
+
+
+        for (var i = 0; i < result.length; i++) {
+            retArr.push(result[i][1]);
+
+        }
+    }
+
+
+    var l = retArr.length;
+    for (var i = n; i < l; i++) {
+        retArr[i].page = 'PremixesTypes';
+    }
+
+
+    var unbranded = (base.getData('UnbrandedTypes'));
+
+    if (unbranded) {
+        var result = Object.keys(unbranded).map(function(key) {
+            return [Number(key), unbranded[key]];
+        });
+
+
+        for (var i = 0; i < result.length; i++) {
+            retArr.push(result[i][1]);
+
+        }
+    }
+
+
+    var n = retArr.length;
+    for (var i = l; i < n; i++) {
+        retArr[i].page = 'UnbrandedTypes';
+    }
+
+
+    var branded = (base.getData('BrandedTypes'));
+
+    if (branded) {
+        var result = Object.keys(branded).map(function(key) {
+            return [Number(key), branded[key]];
+        });
+
+
+        for (var i = 0; i < result.length; i++) {
+            retArr.push(result[i][1]);
+
+        }
+    }
+
+
+    var l = retArr.length;
+    for (var i = n; i < l; i++) {
+        retArr[i].page = 'BrandedTypes';
+    }
+
     return retArr;
 
 }
@@ -324,13 +591,7 @@ var date_sort_asc = function(date1, date2) {
 function getOrderData(batch) {
     //batch=901001;
     var olddata = base.getData('Orders/' + batch);
-    var prod = base.getData('References/ProductCodes/'+olddata.productcode);
-  if(prod.multipliers){
-    olddata.bottles  =  olddata.bottles /  prod.multipliers.bottles
-    olddata.combs  =  olddata.combs /  prod.multipliers.combs
-    
-    
-  }
+
     var data = getFormData();
 
 
@@ -448,13 +709,10 @@ function updateShippingInformation() {
 }
 
 function updateShippingInformation2(batch) {
-  var suffix = item.batch.substr(-1);
-  var for_branded_stock = suffix == BRANDED_STOCK_SUFFIX ? true : false;
-  if(!for_branded_stock){
     var orders = base.getData('Orders/' + batch);
     base.updateData('Shipping/' + batch, orders)
-  }
-  
+
+
 }
 
 function getShippingData() {
@@ -567,17 +825,119 @@ function updatesingleQTY(id, page, data) {
 
 
 function getLocations() {
- 
-  var locationsData = [
-    [JSONtoARR(base.getData('Production'))],
-    [JSONtoARR(base.getData('Printing'))],
-    [JSONtoARR(base.getData('Labelling'))],
-    [JSONtoARR(base.getData('Packaging'))],
-    [JSONtoARR(base.getData('Shipping'))],
-    
-  ];
+    var mixingSheet = base.getData('MixingTeam');
+    var Production = base.getData('Production');
+    var Printing = base.getData('Printing');
+    var Labelling = base.getData('Labelling');
+    var Packaging = base.getData('Packaging');
+    var shippingArr = getShippingData();
+    var locationsData = [
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+    ];
 
- 
+
+    for (var i = 0; i < shippingArr.length; i++) {
+        if (shippingArr[i].Location) {
+            locationsData[0].push(shippingArr[i]);
+        }
+    }
+
+
+
+    if (Packaging) {
+        var result = Object.keys(Packaging).map(function(key) {
+            return [Number(key), Packaging[key]];
+        });
+
+        var PackagingArr = [];
+        for (var i = 0; i < result.length; i++) {
+            PackagingArr.push(result[i][1]);
+        }
+
+        for (var i = 0; i < PackagingArr.length; i++) {
+            if (PackagingArr[i].Location) {
+                locationsData[1].push(PackagingArr[i]);
+            }
+        }
+    }
+
+    if (Labelling) {
+        var result = Object.keys(Labelling).map(function(key) {
+            return [Number(key), Labelling[key]];
+        });
+
+        var LabellingArr = [];
+        for (var i = 0; i < result.length; i++) {
+            LabellingArr.push(result[i][1]);
+        }
+        LabellingArr.sort(sortarr);
+
+        for (var i = 0; i < LabellingArr.length; i++) {
+            if (LabellingArr[i].Location) {
+                locationsData[2].push(LabellingArr[i]);
+            }
+        }
+    }
+    if (Printing) {
+        var result = Object.keys(Printing).map(function(key) {
+            return [Number(key), Printing[key]];
+        });
+
+        var PrintingArr = [];
+        for (var i = 0; i < result.length; i++) {
+            PrintingArr.push(result[i][1]);
+        }
+        PrintingArr.sort(sortarr);
+
+        for (var i = 0; i < PrintingArr.length; i++) {
+            if (PrintingArr[i].Location) {
+
+                locationsData[3].push(PrintingArr[i]);
+            }
+        }
+    }
+
+    if (Production) {
+        var result = Object.keys(Production).map(function(key) {
+            return [Number(key), Production[key]];
+        });
+
+        var ProductionArr = [];
+        for (var i = 0; i < result.length; i++) {
+            ProductionArr.push(result[i][1]);
+        }
+
+
+        for (var i = 0; i < ProductionArr.length; i++) {
+            if (ProductionArr[i].Location) {
+                locationsData[4].push(ProductionArr[i]);
+            }
+        }
+    }
+
+    if (mixingSheet) {
+        var result = Object.keys(mixingSheet).map(function(key) {
+            return [Number(key), mixingSheet[key]];
+        });
+
+        var mixingSheetArr = [];
+        for (var i = 0; i < result.length; i++) {
+            mixingSheetArr.push(result[i][1]);
+        }
+
+        for (var i = 0; i < mixingSheetArr.length; i++) {
+            if (mixingSheetArr[i].Location) {
+                locationsData[5].push(mixingSheetArr[i]);
+            }
+        }
+    }
+
+
 
 
     return locationsData;
@@ -773,12 +1133,12 @@ function TESTSEARCHFOR() {
     //    searcharr.push(['Shipping', params]);
 
     var params = {
-        orderBy: 'final_status',
-        equalTo: "Not run",
+        orderBy: 'word',
+        equalTo: "VG",
 
     }
 
-    searcharr.push(['Production', params]);
+    searcharr.push(['Inventory', params]);
 
     var data = searchFor(searcharr);
     Logger.log(data);
@@ -1057,7 +1417,8 @@ function save_PCD(obj, old, editold) {
         descr = descr.replace(/&/g, '').replace('&', '').replace('/', '').replace('(', '').replace(')', '').replace('.', '');
         prod = prod.replace(/&/g, '').replace('&', '').replace('/', '').replace('(', '').replace(')', '').replace('.', '');
         obj.prod = prod;
-        obj.descr = descr; 
+        obj.descr = descr;
+        base.updateData('References/Descriptions/' + descr, obj);
         base.updateData('References/ProductCodes/' + prod, obj);
         var descr2 = descr.split(': ');
         var name2 = descr2[1].replace('3 x 10ml', '10ml').replace('4 x 10ml', '10ml').replace(/\./g, "");
@@ -1079,7 +1440,8 @@ function save_PCD(obj, old, editold) {
         descr = descr.replace(/&/g, '').replace('&', '').replace('/', '').replace('(', '').replace(')', '').replace(/\./gi, '');
         prod = prod.replace(/&/g, '').replace('&', '').replace('/', '').replace('(', '').replace(')', '').replace(/\./gi, '');
         obj.prod = prod;
-        obj.descr = descr; 
+        obj.descr = descr;
+        base.updateData('References/Descriptions/' + descr, obj);
         base.updateData('References/ProductCodes/' + prod, obj);
         generateForSingleBrand3(prod, descr);
         var descr2 = descr.split(': ');
@@ -1116,12 +1478,12 @@ function getEPCandFormdata(PC) {
     }
 }
 
-function getEPDandFormdata(productcode) {
-    Logger.log('PD  ' + productcode);
+function getEPDandFormdata(PD) {
+    Logger.log('PD  ' + PD);
     try {
         var formdata = getFormData();
 
-        var EPD = base.getData('References/ProductCodes/' + productcode);
+        var EPD = base.getData('References/Descriptions/' + PD);
         var EPC = EPD.prod;
         var arr = [formdata, EPC, EPD, 'EPD']
         return arr;
@@ -1136,6 +1498,10 @@ function getPCSelect(PC) {
     return ret;
 }
 
+function getPDSelect(PD) {
+    var ret = base.getData('References/Descriptions/' + PD);
+    return ret;
+}
 
 
 function createDatalistPCPD() {
@@ -1539,19 +1905,19 @@ function getRoundups() {
 
     } else {
         return [{
-            batch: 5,
-            bottles: 1
+            nic: 5,
+            cbd: 1
         }, 'Roundups'];
     }
 
 }
 
 function updateRoundups(obj) {
-    if (!obj.batch) {
-        obj.batch = 1;
+    if (!obj.nic) {
+        obj.nic = 1;
     }
-    if (!obj.bottles) {
-        obj.bottles = 1;
+    if (!obj.cbd) {
+        obj.cbd = 1;
     }
     base.updateData('Roundups', obj);
     return 'Saved';

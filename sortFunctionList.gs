@@ -38,7 +38,7 @@ function makeKEYSARR(){
 var keys=[['orderdate', 'date'],['notes', 'exists'], ['starttime', 'num'], ['machineP', 'string'], ['machineL', 'string'], ['batch', 'num'],['fill', 'num'], ['orderID', 'special'], ['productcode', 'string'],
 ['productdescription', 'string'], ['priority', 'num'], ['customer', 'string'], ['brand', 'string'], ['recipe.name', 'string'], ['flavour.name', 'string'], ['bottles', 'num']
 , ['stocking', 'num'], ['btype', 'string'], ['lid', 'string'], ['packagingType.name', 'string'], ['QTY', 'num'], ['flavvalue', 'num'], ['VGval', 'num'], ['AGval', 'num'], ['PGval', 'num'],
-['Nico', 'num'],['Nicosalts', 'num'], ['CBDvalue', 'num'], ['mixing', 'num'], ['premixed', 'num'], ['premixedSerum', 'num'], ['premixedStimulant', 'num'], ['unbranded', 'num'], ['branded', 'num'], ['backtubed', 'num'], ['mixing_status', 'string'],
+['Nico', 'num'],['Nicosalts', 'num'], ['CBDvalue', 'num'], ['mixing', 'num'], ['premixed', 'num'], ['unbranded', 'num'], ['branded', 'num'], ['backtubed', 'num'], ['mixing_status', 'string'],
 ['production_status', 'string'], ['printing_status', 'string'], ['labeling_status', 'string'], ['packaging_status', 'string'], ['final_status', 'string'], ['partialProduction','string'],
 ['partialPackaging', 'string'], ['MCTval', 'num'], ['row', 'num'], ['menu', 'string'], ['started', 'string'], ['flavourmix.name', 'string'], ['Completed', 'string'],
 ['prodDate', 'date'], ['batches', 'string'], ['MIXNAME', 'string'], ['RECIPE', 'string'], ['FLAVOUR', 'string'], ['orderDates', 'string'], ['QTYTOTAL', 'string'], ['Notes', 'string'],
@@ -219,6 +219,7 @@ rett=data.sort(sortSTRINGHL(key));
 }else if(sorttype=='date'){
 rett=data.sort(sortDATEHL(key));
 }else if(key=='orderID'){
+Logger.log('sortorderids');
 rett=data.filter(function(item){ return item.orderID}).sort(sortOrderIDsHL);
 }else{
 rett=data.sort(superSort2(key));

@@ -440,7 +440,8 @@ function createRefferenceDB2(id,data) {
   }
   options1 += '}';
   options2 += '}';
-  var ob1 = JSON.parse(options1); 
+  var ob1 = JSON.parse(options1);
+  var ob2 = JSON.parse(options2);
   options3 += '}';
   options4 += '}';
   var ob3 = JSON.parse(options3);
@@ -462,10 +463,12 @@ function createRefferenceDB2(id,data) {
   var msg = LOGDATA.msg;
   logItem(LOGDATA);
   //      base.updateData('References/ProductCodes', ob3);
-   
+  
+  //     base.updateData('References/Descriptions', ob4);
   
   base.updateData('References/ProductCodes', ob1);
-   
+  
+  base.updateData('References/Descriptions', ob2);
   
   return msg + ' \n Updated.';
 }
