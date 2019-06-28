@@ -3,13 +3,13 @@ function getPremixDropdown() {
 
     return [data, 'premixSafety'];
 }
-
-function getFormData() {
+function getLargestBatchForm(add){
+  return getLargestBatch(JSONtoARR(base.getData('Orders')))+add
+}
+function getFormData(add) {
   var PC = getProductCodes();
   var PD = PC;
   
-    var recipes = getRecipeDropdown();
-    var flavours = getFlavourDropdown();
     var bottletypes = getBottlesDropdown();
     var lids = getLidDropdown();
     var packagings = getPackagingDropdown();
@@ -25,9 +25,9 @@ function getFormData() {
             return item
         }
     }).sort(sortSTRINGHL('name'));
+    
+    var batch = getLargestBatchForm(add)
     var data = {
-        'recipes': recipes,
-        'flavours': flavours,
         'bottletypes': bottletypes,
         'lids': lids,
         'packagings': packagings,
@@ -36,7 +36,8 @@ function getFormData() {
         'PD': PD,
         'PC': PC,
         'boxes': boxes,
-        'labels': labels
+        'labels': labels,
+        batch:batch,
     };
     return data;
 }
@@ -114,17 +115,13 @@ function getSearchValues(page, DBpage, key, num) {
 
 function getFormData2(page) {
     var PD = getProductDescriptions();
-    var PC = getProductCodes();
-    var recipes = getRecipeDropdown();
-    var flavours = getFlavourDropdown();
+    var PC = getProductCodes(); 
     var bottletypes = getBottlesDropdown();
     var lids = getLidDropdown();
     var packagings = getPackagingDropdown();
     var customers = getCustomerDropdown();
     var brands = getBrandDropdown();
-    var data = {
-        'recipes': recipes,
-        'flavours': flavours,
+    var data = { 
         'bottletypes': bottletypes,
         'lids': lids,
         'packagings': packagings,
