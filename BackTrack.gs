@@ -504,7 +504,7 @@ function updateOrder(batch, bottles, sheet, originalItem) {
 }
 //REVERSE DELETION
 function TESTREVERSEINFO() {
-    getBatchInfo(['918709']);
+    getBatchInfo(['915297'],'statuscheck');
 }
 
 function getBatchInfo(batches, key) {

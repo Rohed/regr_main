@@ -1468,9 +1468,7 @@ function checkStatus(SELECTED) {
     var data = JSONtoARR(base.getData('Orders'));
     for (var i = 0; i < data.length; i++) {
 
-        if (!data[i].recipe) {
-            continue;
-        }
+ 
         if (SELECTED.indexOf(data[i].orderID) >= 0) {
             batches.push(data[i].batch);
 
@@ -1495,13 +1493,12 @@ function refreshOrderPC() {
                 list[i].boxname = dataPC.boxname;
                 list[i].fill = dataPC.fill;
                 list[i].brand = dataPC.brand;
-                list[i].brandSKU = dataPC.brandSKU;
-                list[i].flavour = dataPC.flavour;
-                list[i].recipe = dataPC.recipe;
+                list[i].brandSKU = dataPC.brandSKU; 
                 list[i].btype = dataPC.btype;
                 list[i].lid = dataPC.lid;
                 list[i].botSKU = dataPC.botSKU;
                 list[i].lidSKU = dataPC.lidSKU;
+                list[i].tubeSKU = dataPC.tubeSKU;
                 list[i].packaging = dataPC.packaging;
                 list[i].packagingType = dataPC.packagingType;
                 list[i].productcode = dataPC.prod;
