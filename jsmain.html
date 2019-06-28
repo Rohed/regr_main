@@ -426,17 +426,24 @@ $('.tabs3 .tab-links3 a').on('click', function(e) {
 
 });
 
+
+$('#newOrder').on('click', function(e) {
+    $('.modal-body').html('');
+    
+    EDITORDER = false;
+    google.script.run.withSuccessHandler(buildForm).getFormData('');
+});
 $('#neworder').on('click', function(e) {
     $('.modal-body').html('');
     
     EDITORDER = false;
-    google.script.run.withSuccessHandler(buildForm).getFormData();
+    google.script.run.withSuccessHandler(buildForm).getFormData('');
 });
 $('#newOrderStock').on('click', function(e) {
     $('.modal-body').html('');
     
     EDITORDER = false;
-    google.script.run.withSuccessHandler(buildFormStock).getFormData();
+    google.script.run.withSuccessHandler(buildFormStock).getFormData('B');
 });
 function clearLastPage() {
     var inmix = thisPage.match('Mixing');
@@ -487,7 +494,7 @@ function buildForm(data) {
     var html = '';
 
     html += '<table class="form_table">';
-    html += '<tr><td><h4>Order Date</h4></td><td><h4>Batch</h4></td><td><h4>Code</h4></td><td><h4>Description</h4></td><td><h4>OrderID</h4></td><td><h4>Priority</h4></td></tr>';
+    html += '<tr><td><h4>Order Date</h4></td><td><h4>Batch</h4></td><td><h4>Code</h4></td><td><h4>Description</h4></td><td><h4>OrderID</h4></td></tr>';
     html += '<tr><td><div class="input-group"><input type="date" value=""  name="orderDate"  id="orderDate" class="form-control" placeholder="Order Date" aria-describedby="sizing-addon2"></div></td>';
     html += '<td><div class="input-group"><input type="text" value="" name="orderbatch" id="orderbatch"  class="form-control" placeholder="Batch" aria-describedby="sizing-addon2"></div></td>';
     var codeSelect = '<option id="blank" value=""><option>';
@@ -512,15 +519,15 @@ function buildForm(data) {
     for (var i = 0; i < data.brands.length; i++) {
         brandSelect += '<option value="' + data.brands[i].sku + '" id="' + data.brands[i].name + '">' + data.brands[i].name + '<option>';
     }
-    html += '<td><div class="input-group"><input type="text" id="priority" class="form-control" placeholder="Priority" aria-describedby="sizing-addon2"></div></td></tr>';
+    html += '</tr>';
 
-    html += '<tr><td><h4>Customer</h4></td><td><h4>Brand</h4></td><td><h4>Packs for customer</h4></td><td><h4>Pre Printed Bottle Labels</h4></td><td><h4>Pre Printed Pack Labels</h4></td></tr>';
+    html += '<tr><td><h4>Customer</h4></td><td><h4>Brand</h4></td><td><h4>Packs for customer</h4></td></tr>';
     html += '<tr><td><select class="form-control" id="customerSelect">' + customerSelect + '</select></td><td><select class="form-control"  id="brandSelect">' + brandSelect + '</select></td>';
 
     html += '<td><div class="input-group"><input type="text" id="numBottles" class="form-control" placeholder="Packs for customer" aria-describedby="sizing-addon2"></div></td>';
 
     
-    html += '<td>	<div class="form-check"><input type="checkbox"  id="prePrintedBottleLabels"/></div></td><td>	<div class="form-check"><input type="checkbox"  id="prePrintedPackLabels"/></div></td></tr>';
+    html += '</tr>';
 
     html += '<tr></td><td><h4>Bottle Type</h4></td><td><h4>Tube Type</h4></td><td><h4>Lid Type</h4></td>';
     html += '<td><h4>Pack Type</h4></td></tr>';
@@ -549,9 +556,12 @@ function buildForm(data) {
     html += '<td><select class="form-control" id="packagingType">' + packagingSelect + '</select></td>';
 
     html += '</tr></table>';
+     
+       
+
     $("#updating").hide();
     $('.modal-body').html(html);
-
+     $("#orderbatch").val(data.batch);
 }
 
 
@@ -563,9 +573,9 @@ function buildFormStock(data) {
     var html = '';
 
     html += '<table class="form_table">';
-    html += '<tr><td><h4>Order Date</h4></td><td><h4>Batch</h4></td><td><h4>Code</h4></td><td><h4>Description</h4></td><td><h4>OrderID</h4></td><td><h4>Priority</h4></td></tr>';
+    html += '<tr><td><h4>Order Date</h4></td><td><h4>Batch</h4></td><td><h4>Code</h4></td><td><h4>Description</h4></td><td><h4>OrderID</h4></td></tr>';
     html += '<tr><td><div class="input-group"><input type="date" value=""  name="orderDate"  id="orderDate" class="form-control" placeholder="Order Date" aria-describedby="sizing-addon2"></div></td>';
-    html += '<td><div class="input-group"><input type="text" value="" name="orderbatch" id="orderbatch"  class="form-control" placeholder="Batch" aria-describedby="sizing-addon2"></div></td>';
+    html += '<td><div class="input-group"><input type="text" value="" name="orderbatch" id="orderbatch"  class="form-control" placeholder="Batch"  value="'+data.batch+'" aria-describedby="sizing-addon2"></div></td>';
     var codeSelect = '<option id="blank" value=""><option>';
     for (var i = 0; i < data.PC.length; i++) {
         codeSelect += '<option value="' + data.PC[i].prod + '" id="' + data.PC[i].prod + '">' + data.PC[i].productcode + '<option>';
@@ -588,9 +598,9 @@ function buildFormStock(data) {
     for (var i = 0; i < data.brands.length; i++) {
         brandSelect += '<option value="' + data.brands[i].sku + '" id="' + data.brands[i].name + '">' + data.brands[i].name + '<option>';
     }
-    html += '<td><div class="input-group"><input type="text" id="priority" class="form-control" placeholder="Priority" aria-describedby="sizing-addon2"></div></td></tr>';
+    html += '</tr>';
 
-    html += '<tr><td><h4>Customer</h4></td><td><h4>Brand</h4></td><td><h4>Bottles</h4></td><td><h4>Use Comb</h4></td><td><h4>Pre Printed Bottle Labels</h4></td><td><h4>Pre Printed Pack Labels</h4></td></tr>';
+    html += '<tr><td><h4>Customer</h4></td><td><h4>Brand</h4></td><td><h4>Bottles</h4></td><td><h4>Use Comb</h4></td></tr>';
     html += '<tr><td><select class="form-control" id="customerSelect">' + customerSelect + '</select></td><td><select class="form-control"  id="brandSelect">' + brandSelect + '</select></td>';
 
     html += '<td><div class="input-group"><input type="text" id="numBottles" class="form-control" placeholder="Bottles" aria-describedby="sizing-addon2"></div></td>';
@@ -598,7 +608,7 @@ function buildFormStock(data) {
     html += '<td>	<div class="form-check"><input type="checkbox"  id="usecomb"/></div></td>';
 
 
-    html += '<td>	<div class="form-check"><input type="checkbox"  id="prePrintedBottleLabels"/></div></td><td>	<div class="form-check"><input type="checkbox"  id="prePrintedPackLabels"/></div></td></tr>';
+    html += '</tr>';
 
     html += '<tr></td><td><h4>Bottle Type</h4></td><td><h4>Tube Type</h4></td><td><h4>Lid Type</h4></td>';
     html += '<td><h4>Pack Type</h4></td><td><h4>Serum Batch Code</h4></td><td><h4>Stimulant Batch Code</h4></td></tr>';
@@ -631,9 +641,10 @@ function buildFormStock(data) {
 
     html += '</tr></table>';
 
+
     $("#updating").hide();
     $('.modal-body').html(html);
-
+  $("#orderbatch").val(data.batch);
 }
 
 $('#subModalForm').on('click', function(e) {
@@ -3022,7 +3033,7 @@ function updateMachine(msg) {
 function newPDC() {
     $("#updating").css("display", "block");
     console.log('form data for building new pcd');
-    google.script.run.withSuccessHandler(buildnewPCD).getFormData();
+    google.script.run.withSuccessHandler(buildnewPCD).getFormData('');
 }
 
 function buildnewPCD(data) {

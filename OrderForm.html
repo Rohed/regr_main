@@ -238,7 +238,7 @@ function setVal3(selectedVal,dropdown,inp,type) {
 
     var orders=[];
 
-        google.script.run.withSuccessHandler(buildForm).getFormData();
+        google.script.run.withSuccessHandler(buildForm).getFormData('');
 
 
     function buildForm(data) {
