@@ -247,8 +247,7 @@ function createRefferenceDB(id) {
 function updatebotlid() {
     var bottles = JSONtoARR(base.getData('BottleTypes'));
     var Caps = JSONtoARR(base.getData('Lids'));
-    var pc = JSONtoARR(base.getData('References/ProductCodes'));
-    var pd = JSONtoARR(base.getData('References/Descriptions'));
+    var pc = JSONtoARR(base.getData('References/ProductCodes')); 
     for (var j = 0; j < pc.length; j++) {
         for (var i = 0; i < Caps.length; i++) {
             if (Caps[i].name == pc[j].lid) {
@@ -265,37 +264,18 @@ function updatebotlid() {
             }
         }
     }
-    for (var j = 0; j < pd.length; j++) {
-        for (var i = 0; i < bottles.length; i++) {
-            if (bottles[i].name == pd[j].btype) {
-                pd[j].botSKU = bottles[i].sku;
-                break;
-            }
-        }
-    }
-    for (var j = 0; j < pd.length; j++) {
-        for (var i = 0; i < Caps.length; i++) {
-            if (Caps[i].name == pd[j].lid) {
-                pd[j].lidSKU = Caps[i].sku;
-                break;
-            }
-        }
-    }
+   
     var options1 = '{';
     var options2 = '{';
     for (var i = 0; i < pc.length; i++) {
         options1 += '"' + pc[i].prod + '":' + JSON.stringify(pc[i]) + ',';
     }
-    for (var i = 0; i < pd.length; i++) {
-        options1 += '"' + pc[i].descr + '":' + JSON.stringify(pd[i]) + ',';
-    }
+
     options1 += '}';
     options2 += '}';
     var ob1 = JSON.parse(options1);
-    var ob2 = JSON.parse(options2);
     // base.removeData('References');
     base.updateData('References/ProductCodes', ob1);
-    base.updateData('References/Descriptions', ob2);
 }
 
 function importRecipesFromSheet(id) {
@@ -1066,7 +1046,7 @@ function importBlankPCPC(id) {
 }
 
 function testimport() {
-    var id = '1xoIVLw0h90EsevJJlwMc68vAjm6TRcrXYbWIYN5qYnA';
+    var id = '18joaC596nOeNQ5X12VxTrQm5_j1z7k_ZpU0PcsSL3Zk';
     importInventoryData(id)
 }
 
@@ -1081,32 +1061,43 @@ function importInventoryData(id) {
         data: new Array()
     };
     try {
-        var pages = ['Misc', 'Flavours', 'Labels', 'Boxes', 'Packages', 'Flavours', 'BottleTypes', 'Lids', 'PremixesTypes', 'UnbrandedTypes', 'BrandedTypes'];
+        var pages = ['Misc',  'Labels', 'Boxes', 'Packages',  'BottleTypes', 'Lids', 'PremixesTypes',  'BrandedTypes'];
         var ss = SpreadsheetApp.openById(id);
         LOGDATA.batch = ss.getName();
         var data = ss.getSheets()[0].getDataRange().getValues();
         for (var i = 1; i < data.length; i++) {
+          var orderdate = data[i][2] ? data[i][2].toString().split('/') : false;
+          if(orderdate){
+            orderdate = new Date(orderdate[1]+'/'+orderdate[0]+'/'+orderdate[2]).getTime();
+          }
+          
+          var delivdate = data[i][3] ? data[i][3].toString().split('/') : false;
+          if(delivdate){
+            delivdate = new Date(delivdate[1]+'/'+delivdate[0]+'/'+delivdate[2]).getTime();
+          }
+          
+          var paiddate = data[i][4] ? data[i][4].toString().split('/') : false;
+          if(paiddate){
+            paiddate = new Date(paiddate[1]+'/'+paiddate[0]+'/'+paiddate[2]).getTime();
+          }
+                  
             var obj = {
                 sku: data[i][0],
                 desc: data[i][1],
-                orderdate: data[i][2],
-                delivdate: data[i][3],
-                paiddate: data[i][4],
+                orderdate:orderdate,
+                delivdate:delivdate,
+                paiddate: paiddate,
                 eta: data[i][5],
                 quantity: data[i][6],
                 note: data[i][7],
+              serumBatchCode:data[i][8],
+              stimulantBatchCode:data[i][9],
+              
             };
             for (var p = 0; p < pages.length; p++) {
-                if (pages[p] == 'Misc') {
-                    var exists2 = base.getData(pages[p] + '/' + obj.desc.replace(/\//g, '').replace(/\-/g, '').replace(/\$/g, '').replace(/\./g, '').replace(/\#/g, '').replace(/\:/g, ''));
-                    if (!exists2) {
-                        var exists = base.getData(pages[p] + '/' + obj.sku);
-                    } else {
-                        var exists = exists2;
-                    }
-                } else {
-                    var exists = base.getData(pages[p] + '/' + obj.sku);
-                }
+                
+              var exists = base.getData(pages[p] + '/' + obj.sku);
+              
                 if (exists) {
                     obj.page = pages[p];
                     if (!obj.desc) {
@@ -1168,56 +1159,3 @@ function intersect(a, b) {
     });
 }
 
-function updatebotlid() {
-    var bottles = JSONtoARR(base.getData('BottleTypes'));
-    var Caps = JSONtoARR(base.getData('Lids'));
-    var pc = JSONtoARR(base.getData('References/ProductCodes'));
-    var pd = JSONtoARR(base.getData('References/Descriptions'));
-    for (var j = 0; j < pc.length; j++) {
-        for (var i = 0; i < Caps.length; i++) {
-            if (Caps[i].name == pc[j].lid) {
-                pc[j].lidSKU = Caps[i].sku;
-                break;
-            }
-        }
-    }
-    for (var j = 0; j < pc.length; j++) {
-        for (var i = 0; i < bottles.length; i++) {
-            if (bottles[i].name == pc[j].btype) {
-                pc[j].botSKU = bottles[i].sku;
-                break;
-            }
-        }
-    }
-    for (var j = 0; j < pd.length; j++) {
-        for (var i = 0; i < bottles.length; i++) {
-            if (bottles[i].name == pd[j].btype) {
-                pd[j].botSKU = bottles[i].sku;
-                break;
-            }
-        }
-    }
-    for (var j = 0; j < pd.length; j++) {
-        for (var i = 0; i < Caps.length; i++) {
-            if (Caps[i].name == pd[j].lid) {
-                pd[j].lidSKU = Caps[i].sku;
-                break;
-            }
-        }
-    }
-    var options1 = '{';
-    var options2 = '{';
-    for (var i = 0; i < pc.length; i++) {
-        options1 += '"' + pc[i].prod + '":' + JSON.stringify(pc[i]) + ',';
-    }
-    for (var i = 0; i < pd.length; i++) {
-        options1 += '"' + pc[i].descr + '":' + JSON.stringify(pd[i]) + ',';
-    }
-    options1 += '}';
-    options2 += '}';
-    var ob1 = JSON.parse(options1);
-    var ob2 = JSON.parse(options2);
-    // base.removeData('References');
-    base.updateData('References/ProductCodes', ob1);
-    base.updateData('References/Descriptions', ob2);
-}

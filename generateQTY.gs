@@ -1,7 +1,7 @@
 function generatePremixBrandUnbrand(){
   var PC=base.getData('References/ProductCodes');
   var PCList=JSONtoARR(PC);
-  var sheets=['PremixesTypes','UnbrandedTypes','BrandedTypes'];
+  var sheets=['PremixesTypes','BrandedTypes'];
   var toCreatePremix=[];
   var toCreateUnbranded=[];
   var toCreateBranded=[];
@@ -9,17 +9,13 @@ function generatePremixBrandUnbrand(){
     var raw=base.getData(sheets[j]) || {};
     for(var i=0;i<PCList.length;i++){
       if(sheets[j]=='PremixesTypes'){
-        if(!raw[PCList[i].premixSKU]){
-          toCreatePremix.push([PCList[i].premixSKU,PCList[i].premixdescr])
+        if(!raw[PCList[i].premixSKUSerum]){
+          toCreatePremix.push([PCList[i].premixSKUSerum,PCList[i].premixdescrSerum])
         }
-        if(PCList[i].premixSKUColored){
-          if(!raw[PCList[i].premixSKUColored]){
-            toCreatePremix.push([PCList[i].premixSKUColored,PCList[i].premixdescrColored])
+        if(PCList[i].premixSKUStimulant){
+          if(!raw[PCList[i].premixSKUStimulant]){
+            toCreatePremix.push([PCList[i].premixSKUStimulant,PCList[i].premixdescrStimulant])
           }
-        }
-      }else if(sheets[j]=='UnbrandedTypes'){
-        if(!raw[PCList[i].unbrandSKU]){
-          toCreateUnbranded.push([PCList[i].unbrandSKU,PCList[i].unbranddescr])
         }
       }else if(sheets[j]=='BrandedTypes'){
         if(!raw[PCList[i].prod]){
@@ -31,15 +27,10 @@ function generatePremixBrandUnbrand(){
   }
   var msg='Premixes Generated: <br>';
   for(var i=0;i<toCreatePremix.length;i++){
-  
   generateForSinglePremix2(toCreatePremix[i][0],toCreatePremix[i][1]);
   msg+=toCreatePremix[i][0]+' - '+toCreatePremix[i][1]+'<br>';
   }
-  msg+='Unbranded Generated: <br>';
-  for(var i=0;i<toCreateUnbranded.length;i++){
-  generateForSingleUnbrand2(toCreateUnbranded[i][0],toCreateUnbranded[i][1]);
-  msg+=toCreateUnbranded[i][0]+' - '+toCreateUnbranded[i][1]+'<br>';
-  }
+ 
     msg+='Branded Generated: <br>';
  for(var i=0;i<toCreateBranded.length;i++){
 
@@ -248,19 +239,13 @@ function getQTY(page){
 var retArr=[];
 
 
-var params={
-
-//orderBy:'flavour'
-orderBy : ['name'],
-
-};
+ 
 var data=JSONtoARR(base.getData(page))
 for(var i=0;i<data.length;i++){
  if(!data[i].name){ data[i].name="none"}
 }
 data=data.sort(sortSTRINGHL('name'));
-//data=data.sort(superSort1('name'));
-
+ 
 return [data,page];
 
 

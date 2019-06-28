@@ -27,8 +27,7 @@ convertUsageToArr(data,USAGE)
 }
 function convertUsageToArr(data,usage){
   var arr = [data.batch,data.orderID];
-  var pages=['Packaged Branded','Branded','Unbranded','Premix','Colored Premix',
-             'Mixing','Flavour','Color','Bottles','Caps',
+  var pages=['Packaged Branded','Premix Serum','Premix Stimulant','Bottles','Tubes','Caps',
              'Packages','Bottle Label','Pack Label','Pre Bottle Label','Pre Pack Label']
   
   var standardItems = ['sku','name','qty'];

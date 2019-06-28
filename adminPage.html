@@ -26,26 +26,23 @@
 
         <div class="container-fluid">
         <div class='logo'> <img src="https://drive.google.com/uc?export=view&id=<?=LOGOIMG ?>">
-            <h1><?=TITLE ?></h1>
+            <h2><?=TITLE ?></h2>
         </div>
 <div class="tabs">
    <ul class="tab-links">
       <li class="active"><a href="#tab1" id="defaultAnchor">Orders</a></li>
-      <li><a href="#tab2">Mixing Tabs</a></li>
+   
       <li><a href="#tab3">Production</a></li>
-      <li><a href="#tab4">Printing</a></li>
+      <li><a href="#tab4">Batch Printing</a></li>
       <li><a href="#tab5">Labelling</a></li>
       <li><a href="#tab6">Packaging</a></li>
-      <li><a href="#tab7">Shipping</a></li>
-      <li><a href="#tab8">Locations</a></li>
+      <li><a href="#tab7">Shipping</a></li> 
       <li><a href="#tab9">QTY</a></li>
       <li><a href="#tab10">Inventory</a></li>
       <li><a href="#tab11">Functions</a></li>
       <li><a href="#tab12">Reporting</a></li>
    </ul>
-   <ul class="tab-links" id='ordersSubTab'>
-      <li id='subTabFlavourMixOrders'><a href="#tab1" sub='subOrder' page='FlavourMixOrders'>Flavour Mix Orders</a></li>
-   </ul>
+ 
    <ul class="tab-links" id='baseFilters'>
       <li class="active"><a href="#tab1" sub='sub' param='Not Run' id="defaultAnchor">Not Run</a></li>
       <li><a sub='sub' id='wentNegative' param='wentNegative' href="#tab2">Missing</a></li>
@@ -543,12 +540,9 @@
                         <li><a href="#Labels">Labels</a></li>
                         <li><a href="#Boxes">Boxes</a></li>
                         <li><a href="#Packages">Packages</a></li>
-                        <li><a href="#Color">Colors</a></li>
-                        <li><a href="#Flavours">Flavours</a></li>
                         <li><a href="#BottleTypes">Bottles</a></li>
                         <li><a href="#Lids">Caps</a></li>
                         <li><a href="#PremixesTypes">Premixes</a></li>
-                        <li><a href="#UnbrandedTypes">Unbranded Bottles</a></li>
                         <li><a href="#BrandedTypes">Branded Bottles</a></li>
                      </ul>
                   </div>
@@ -627,14 +621,14 @@
             <table class="table">
                <tr>
                   <td>
-                     <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newflavour">New Flavour</button>
-                     <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newflavourmix" id='newflavourmixButton'>New Flavour Mix</button>
-                     <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newflavourmix" id='editflavourmixButton'>Edit Flavour Mix</button>
+                     <!--   <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newflavour">New Flavour</button>-->
+                      <!--  <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newflavourmix" id='newflavourmixButton'>New Flavour Mix</button>-->
+                      <!--  <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newflavourmix" id='editflavourmixButton'>Edit Flavour Mix</button>-->
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newcustomer">New Customer</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newBrand">New Brand</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newBottle">New Bottle</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newLid">New Lid</button>
-                     <button class="btn btn-info btn-lg" type="button" id="generatePUB">Generate Premix, Unbranded and Branded</button>
+                     <button class="btn btn-info btn-lg" type="button" id="generatePUB">Generate Premix and Branded</button>
                      <!--   <button class='btn btn-primary btn-lg' id='LOGstatus'>On</button><input id='LOGstatusID' style='display:none;' value='On' /> -->
                   </td>
                </tr>
@@ -643,14 +637,14 @@
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newMisc">New Misc</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newLabel" id='newLabelButton'>New Label</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newLabel" id='editLabelButton'>Edit Label</button>
-                     <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newColor" id='newColorButton'>New Color</button>
-                     <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newColor" id='editColorButton'>Edit Color</button>
+                     <!--   <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newColor" id='newColorButton'>New Color</button>-->
+                    <!--    <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newColor" id='editColorButton'>Edit Color</button>-->
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newBox" id='newBoxButton'>New Box</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newBox" id='editBoxButton'>Edit Box</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newPackaging" id='newPackageButton'>New Packaging</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newPackaging" id='editPackageButton'>Edit Packaging</button>
-                     <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newRecipe" id='newRecipeButton'>New Recipe</button>
-                     <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newRecipe" id='editRecipeButton'>Edit Recipe</button>
+                     <!--   <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newRecipe" id='newRecipeButton'>New Recipe</button>-->
+                     <!--   <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newRecipe" id='editRecipeButton'>Edit Recipe</button>-->
                   </td>
                </tr>
                <tr>
@@ -660,7 +654,7 @@
                      <button class="btn btn-info btn-lg" type="button" id='custManage'>Manage Customers</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newOrdersfromCSV">Import Orders from CSV</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newQTYfromSheet">Import QTY from Sheet</button>
-                     <button class="btn btn-info btn-lg" type="button" data-toggle="modal"  data-target="#newBlankPCList">Import Blank PC/PD List</button>
+                    <!--   <button class="btn btn-info btn-lg" type="button" data-toggle="modal"  data-target="#newBlankPCList">Import Blank PC/PD List</button>-->
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#exportToSheet">Export Tabs to Spreadsheet</button>
                   </td>
                </tr>
@@ -669,7 +663,7 @@
                   <button class="btn btn-info btn-lg" type="button" id="machineManage">Manage Machines</button>
                   <button class="btn btn-info btn-lg" type="button" id="FillTimeManage">Manage Fill Production Times</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newPDCFromSheet">Import Product Code/Description from Sheet</button>
-                     <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newRecipesFromSheet">Import Recipes from Sheet</button>
+                     <!--  <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newRecipesFromSheet">Import Recipes from Sheet</button>-->
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newBoxesFromSheet">Import Boxes from Sheet</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newPackagesFromSheet">Import Packages from Sheet</button>
                   </td>
@@ -680,15 +674,15 @@
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newBottlesFromSheet">Import Bottles from Sheet</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newCapsFromSheet">Import Caps from Sheet</button>
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newBrandsFromSheet">Import Brands from Sheet</button>
-                     <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newFlavoursFromSheet">Import Flavours from Sheet</button>
+                    <!--   <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newFlavoursFromSheet">Import Flavours from Sheet</button>-->
                      <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newLabelsFromSheet">Import Labels from Sheet</button>
-                     <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newColorsFromSheet">Import Colors from Sheet</button>
+                    <!--   <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#newColorsFromSheet">Import Colors from Sheet</button>-->
                      
                   </td>
                </tr>
                 <tr>
                   <td>
-                    <button class="btn btn-info btn-lg" type="button"  id="#roundups" onclick="getRoundups()" >Edit Rount Up Values</button>
+                    <button class="btn btn-info btn-lg" type="button"  id="#roundups" onclick="getRoundups()" >Edit Batch size and Batch bottles </button>
                       <button class="btn btn-info btn-lg" type="button" onclick="getglobalFilter()" >Edit Global Date Filter</button>
                   <button class="btn btn-info btn-lg" type="button"  id="#backupAndRestore" onclick="backupAndRestore()">Backup And Restore</button>
                    <button class="btn btn-info btn-lg" type="button"   onclick="refreshOrders()">Refresh Orders</button>
