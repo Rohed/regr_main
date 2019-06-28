@@ -504,7 +504,7 @@ function updateOrder(batch, bottles, sheet, originalItem) {
 }
 //REVERSE DELETION
 function TESTREVERSEINFO() {
-    getBatchInfo(['915297'],'statuscheck');
+    getBatchInfo(['915361B'],'reverse');
 }
 
 function getBatchInfo(batches, key) {
@@ -526,7 +526,7 @@ function getBatchInfo(batches, key) {
     batches = batches.concat(topush);
     var rett = [];
     for (var i = 0; i < sheets.length; i++) {
-        var raw = base.getData(sheets[i]);
+        var raw = base.getData(sheets[i]) || {};
         // var list=JSONtoARR(raw);
         for (var j = 0; j < batches.length; j++) {
             var suf2 = batches[j].substr(-2);
@@ -575,16 +575,16 @@ function getBatchInfo(batches, key) {
 function testDELANREV() {
 //var batchInfo = getBatchInfo(['918709'],'deleteandreverse')[0];
 //base.updateData('batchInfo',{'info':JSON.stringify(batchInfo)});
-var batchInfo = JSON.parse(base.getData('batchInfo/info'))
+var batchInfo = getBatchInfo(['915361B'],'reverse')
 Logger.log(batchInfo);
-deleteAndReverse(batchInfo, 'deleteandreverse')
+deleteAndReverse(batchInfo[0], 'reverse')
 }
 
 function deleteAndReverse(data, key) {
     var sheets = ['Packaging', 'Labelling', 'Printing', 'Production', 'Orders'];
     //  var sheetStatus=['final_status','mixing_status','printing_status','labelling_status','packaging_status'];
     for (var i = 0; i < sheets.length; i++) {
-        var raw = base.getData(sheets[i]);
+        var raw = base.getData(sheets[i]) || {};
         for (var j = 0; j < data.length; j++) {
           var item = data[j];
           
@@ -609,7 +609,7 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
     Logger.log(order);
     Logger.log(sheetItem);
     //   var suffix = sheetItem[0].replace(/[^a-zA-Z]+/g, '');
-    if (sheet == 'Packaging' && sheetItem[6][0] == 'Not Run') {
+    if (sheet == 'Packaging' && sheetItem[5][0] == 'Not Run') {
         var brandname = getBrandName(order);
         var packData = getPackagingData(item.packagingType, item.bottles, order.boxname.sku)
         var packink = packData.ink;
@@ -639,12 +639,16 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
           var box = 0;
           if (boxname) {
             fromCompletedtoRunning('Boxes/' + boxname, box);
-          }
-          fromCompletedtoRunning('BrandedTypes/' + brandname, tominusB);
+          } 
         }
         
       }
-    } else if (sheet == 'Packaging' && sheetItem[6][0] == 'Completed') {
+      
+      if(item.usecomb && for_branded_stock){
+         fromReservedtoRunning('Misc/COMBWHITE', item.combs);
+ 
+      }
+    } else if (sheet == 'Packaging' && sheetItem[5][0] == 'Completed') {
         var brandname = getBrandName(order, false);
         var packData = getPackagingData(item.packagingType, item.bottles, order.boxname.sku)
         var packink = packData.ink;
@@ -652,8 +656,7 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
         var boxname = order.boxname.sku;
         var suffix = order.batch.substr(-1);
         var for_branded_stock = suffix == BRANDED_STOCK_SUFFIX ? true : false;
-        var packs = item.bottles / pack;
-        var tominusB = order.branded;
+        var packs = item.bottles / pack; 
         var tominBPack = order.backtubed;
         if (pack != 0) {
           if (for_branded_stock) {
@@ -676,12 +679,16 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
                 if (boxname) {
                     fromCompletedtoRunning('Boxes/' + boxname, box);
                 }
-                fromCompletedtoRunning('BrandedTypes/' + brandname, tominusB);
+               
             }
         }
+      if(item.usecomb && for_branded_stock){
+        fromCompletedtoRunning('Misc/COMBWHITE', item.combs);
+        
+      }
         //  base.removeData('Packaging/'+item[0]);
         ////END FOR PACKAGING
-    } else if (sheet == 'Labelling' && sheetItem[5][0] == 'Not Run') {
+    } else if (sheet == 'Labelling' && sheetItem[4][0] == 'Not Run') {
         
         var origbots = order.bottles; 
         var tominusP = order.premixed; 
@@ -702,21 +709,8 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
         }
         fromReservedtoRunning('Labels/' + label, item.bottles);
      
-        //REMOVEPACKAGING DATA
-        if (tube != 0) {
-            var brandname = getBrandName(order, false);
-            var packink = packData.ink;
-            var tube = packData.botperPack;
-            var boxname = order.boxname.sku;
-            var suffix = order.batch.substr(-1);
-            var for_branded_stock = suffix == BRANDED_STOCK_SUFFIX ? true : false;
-            var packs = item.bottles / tube;
-            //WITH PACKAGING
-            if (for_branded_stock) {
-                fromReservedtoRunning('Packages/' + item.packagingType.sku, packs);
-            }
-        }
-    } else if (sheet == 'Labelling' && sheetItem[5][0] == 'Completed') {
+
+    } else if (sheet == 'Labelling' && sheetItem[4][0] == 'Completed') {
      
         var origbots = order.bottles;
         var tominusP = order.premixed; 
@@ -738,7 +732,7 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
         fromCompletedtoRunning('Labels/' + label, item.bottles);
  
         //END FOR LABELLING
-    } else if (sheet == 'Printing' && sheetItem[4][0] == 'Not Run') {
+    } else if (sheet == 'Printing' && sheetItem[3][0] == 'Not Run') {
         var packData = getPackagingData(item.packagingType, item.bottles + order.branded, order.boxname.sku)
         //   var packlabel = packData.packlabel;
         var packink = packData.ink;
@@ -752,44 +746,8 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
             ink += packink;
         }
         fromReservedtoRunning("Misc/printing ink", ink);
-        // toLabelling(item);
-        //REMOVE LABELLING ITEMS
-     
-        var origbots = order.bottles;
-        var tominusP = order.premixed;
-        var tominBPack = order.backtubed;
-        var botQ2 = item.bottles;
-        var label = order.botlabelsku;
-        var packData = getPackagingData(item.packagingType, item.bottles, order.boxname.sku)
-        // var packlabel = packData.packlabel;
-        var packink = packData.ink;
-        var tube = packData.botperPack;
-        var boxname = order.boxname.sku;
-        var packs = botQ2 / tube;
-        var box = packs / packData.divTubesForBox;
-        if (tube) {
-            if (item.packlabelsku != "" && item.packlabelsku != undefined) {
-                fromReservedtoRunning('Labels/' + item.packlabelsku, packs);
-            }
-        }
-        fromReservedtoRunning('Labels/' + label, item.bottles);
-        var suffix = order.batch.substr(-1);
-       
-        //REMOVEPACKAGING DATA
-        if (tube != 0) {
-            if (for_branded_stock) {
-                var brandname = getBrandName(order, false);
-                var packink = packData.ink;
-                var tube = packData.botperPack;
-                var boxname = order.boxname.sku;
-                var suffix = order.batch.substr(-1);
-                var for_branded_stock = suffix == BRANDED_STOCK_SUFFIX ? true : false;
-                var packs = item.bottles / tube;
-                //WITH PACKAGING
-                fromReservedtoRunning('Packages/' + item.packagingType.sku, packs - tominBPack);
-            }
-        }
-    } else if (sheet == 'Printing' && sheetItem[4][0] == 'Completed') {
+ 
+    } else if (sheet == 'Printing' && sheetItem[3][0] == 'Completed') {
         var packData = getPackagingData(item.packagingType, item.bottles + order.branded, order.boxname.sku)
         //   var packlabel = packData.packlabel;
         var packink = packData.ink;
@@ -804,7 +762,7 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
         }
         fromCompletedtoRunning("Misc/printing ink", ink);
         //END OF PRINTING
-    } else if (sheet == 'Production' && sheetItem[3][0] == 'Not Run') {
+    } else if (sheet == 'Production' && sheetItem[2][0] == 'Not Run') {
       fromReservedtoRunning('Lids/' + item.lidSKU, item.bottles);
       fromReservedtoRunning('BottleTypes/' + item.botSKU, item.bottles);
       fromReservedtoRunning('BottleTypes/' + item.tubeSKU, item.bottles);
@@ -825,7 +783,7 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
           fromReservedtoRunning('PremixesTypes/' + premixStimulant, overprodvol);
             //  UtoRunning(unbrand, item.overprod);
         }
-    } else if (sheet == 'Production' && sheetItem[3][0] == 'Completed') {
+    } else if (sheet == 'Production' && sheetItem[2][0] == 'Completed') {
       fromCompletedtoRunning('Lids/' + item.lidSKU, item.bottles);
       fromCompletedtoRunning('BottleTypes/' + item.botSKU, item.bottles);
       fromCompletedtoRunning('BottleTypes/' + item.tubeSKU, item.bottles);
