@@ -782,7 +782,10 @@ function TESTSEARCHFOR() {
 }
 
 function searchFor(searchARR) {
-    if (searchARR[0][0] == 'Reporting' || searchARR[0][0] == 'Finctions') {
+if(!searchARR){
+return [,]
+}
+    if (searchARR[0] && (searchARR[0][0] == 'Reporting' || searchARR[0][0] == 'Finctions')) {
         return [, ]
     }
 

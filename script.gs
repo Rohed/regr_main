@@ -264,6 +264,7 @@ function MoveItem(batch, sheet) {
         data: new Array()
     };
     var data = base.getData(sheet + '/' + batch);
+    if(data){
     data.current = sheet;
     var result = [];
     try {
@@ -278,7 +279,11 @@ function MoveItem(batch, sheet) {
         LOGDATA.data.push(['Failed:', 'Failed ' + e.message]);
         logItem(LOGDATA);
     }
+   
     return [result, sheet];
+     }else{
+    return ['Batch not found! '+batch+' in '+sheet, sheet];  
+     }
 }
 
 function moveMain(item) {

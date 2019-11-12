@@ -1045,8 +1045,8 @@ function importBlankPCPC(id) {
     for (var i = 1; i < data.length; i++) {}
 }
 
-function testimport() {
-    var id = '18joaC596nOeNQ5X12VxTrQm5_j1z7k_ZpU0PcsSL3Zk';
+function TESTIMPORTINVENTORY() {
+    var id = '1NmTf01sdtsYrr4kBLNu7vcv6TAg7dF3OtY5AlcdQBQk';
     importInventoryData(id)
 }
 
@@ -1064,7 +1064,7 @@ function importInventoryData(id) {
         var pages = ['Misc',  'Labels', 'Boxes', 'Packages',  'BottleTypes', 'Lids', 'PremixesTypes',  'BrandedTypes'];
         var ss = SpreadsheetApp.openById(id);
         LOGDATA.batch = ss.getName();
-        var data = ss.getSheets()[0].getDataRange().getValues();
+        var data = ss.getSheets()[0].getDataRange().getDisplayValues();
         for (var i = 1; i < data.length; i++) {
           var orderdate = data[i][2] ? data[i][2].toString().split('/') : false;
           if(orderdate){
@@ -1088,7 +1088,7 @@ function importInventoryData(id) {
                 delivdate:delivdate,
                 paiddate: paiddate,
                 eta: data[i][5],
-                quantity: data[i][6],
+                quantity: parseFloat(data[i][6]),
                 note: data[i][7],
               serumBatchCode:data[i][8],
               stimulantBatchCode:data[i][9],

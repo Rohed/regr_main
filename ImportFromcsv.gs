@@ -13,9 +13,13 @@ function trydateformat() {
 }
 
 function testgetlarges() {
-    var orders = JSONtoARR(base.getData('Orders'));
-    getLargestBatch(orders)
+       var rawOrders = base.getData('Orders');
+
+        var orders = JSONtoARR(rawOrders);
+        var largestBatch = getLargestBatch(orders);
+        Logger.log(largestBatch);
 }
+
 
 function getLargestBatch(orders) {
     if (orders.length) {
@@ -279,7 +283,7 @@ function saveFileCsv(data, name, sheetRow, numRows) {
                   item.QTY = QTY;
                 } else {
                     LOGDATA.data.push(['Missing PC', PC]);
-                    msg += 'Unable to SAVE ' + PC + ' On line: ' + i + '. Reason: Missing <br>';
+                    msg += 'Unable to SAVE ' + PC + ' On line: ' + i + '. Reason: Missing '+PC+'<br>';
                     // msg += 'DATA: ' + item.ratio + '<br>'; 
                     continue;
                 }

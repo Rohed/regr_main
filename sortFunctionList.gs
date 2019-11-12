@@ -207,7 +207,7 @@ base.updateData(sheet,rawData);
 
 
 function sortBY(data,type,key,page){
-
+try{
 var sortindex=keys.getIndex(key);
 var sorttype=keys[sortindex][1];
 var rett;
@@ -219,7 +219,9 @@ rett=data.sort(sortSTRINGHL(key));
 }else if(sorttype=='date'){
 rett=data.sort(sortDATEHL(key));
 }else if(key=='orderID'){
-rett=data.filter(function(item){ return item.orderID}).sort(sortOrderIDsHL);
+rett=data.filter(function(item){
+return item.orderID
+}).sort(sortOrderIDsHL);
 }else{
 rett=data.sort(superSort2(key));
 }
@@ -239,7 +241,9 @@ rett=data.sort(superSort1(key));
 
 }
 return [page,rett];
-
+}catch(e){
+Logger.log(e)
+}
 }
 
 function superSort1(key){
@@ -280,8 +284,8 @@ function sortOrderIDs(a,b){
 
 //var x=a.orderID.substr(4,a.orderID.length);
 //var y=b.orderID.substr(4,b.orderID.length);
-var x=a.orderID;
-var y=b.orderID;
+var x=parseFloat(a.orderID.toString().match(/\d+/g)[0]);
+var y=parseFloat(b.orderID.toString().match(/\d+/g)[0]);
 
 return parseInt(x,10)-parseInt(y,10);
 
@@ -294,8 +298,8 @@ function sortOrderIDsHL(a,b){
 
 //var x=a.orderID.substr(4,a.orderID.length);
 //var y=b.orderID.substr(4,b.orderID.length);
-var x=a.orderID;
-var y=b.orderID;
+var x=parseFloat(a.orderID.toString().match(/\d+/g)[0]);
+var y=parseFloat(b.orderID.toString().match(/\d+/g)[0]);
 
 return parseInt(y,10)-parseInt(x,10);
 

@@ -871,7 +871,7 @@ function formatDateDisplay(datems) {
             var day = ("0" + now.getDate()).slice(-2);
             var month = ("0" + (now.getMonth() + 1)).slice(-2);
 
-            var today = (day) + "-" + (month) + "-" + now.getFullYear();
+            var today = (day) + "/" + (month) + "/" + now.getFullYear();
 
             return today;
         } else {
@@ -897,7 +897,7 @@ function formatDateDisplay2(datems) {
             var now2 = now1[0].split(' ');
 
             var now3 = now2[0].split('-');
-            var now4 = now3[2] + '-' + now3[1] + '-' + now3[0] + ' ' + now2[1];
+            var now4 = now3[2] + '/' + now3[1] + '/' + now3[0] + ' ' + now2[1];
 
             return now4;
 
