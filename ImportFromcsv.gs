@@ -205,7 +205,7 @@ function saveFileCsv(data, name, sheetRow, numRows) {
                   }
                     var item = {
                         boxname: dataPC.boxname,
-
+                         booklet: dataPC.booklet,
                         fill: dataPC.fill,
                         orderdate: orderdate,
                         //    batch: values[i][0],
@@ -243,7 +243,7 @@ function saveFileCsv(data, name, sheetRow, numRows) {
                     item.serum = dataPC.fill * item.bottles;
                     item.stimulant = dataPC.fill * item.bottles;
                     item.boxname = dataPC.boxname;
-
+                    item.booklet = dataPC.booklet;
 
                     if (values[i][4]) {
                         values[i][4] = values[i][4].toLowerCase();

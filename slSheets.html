@@ -837,6 +837,7 @@ width: 100%;
                                     <li class="active"><a href="#Misc" id="defaultAnchor">Main QTY</a></li>
                                     <li><a href="#Labels">Labels</a></li>
                                     <li><a href="#Boxes">Boxes</a></li>
+                                    <li><a href="#Booklets">Booklets</a></li>
                                     <li><a href="#Packages">Packages</a></li>
                                     <li><a href="#BottleTypes">Bottles</a></li>
                                     <li><a href="#Lids">Caps</a></li>
@@ -1626,11 +1627,11 @@ function buildSLPrintingTable(data) {
     var tubelabels = 0;
 
     var keys = ['row', 'menu', 'notes', 'move', 'production_status', 'orderdate', 'batch', 'serumBatchCode', 'stimulantBatchCode', 'numLabelsBottles', 'numLabelsTubes', 'expDate', 'orderID', 'productcode', 'productdescription', 'priority', 'customer',
-        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'botlabel', 'boxname.name', 'starttime', 'CompletionDate', 'Completed', 'Location'
+        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'botlabel', 'boxname.name', 'booklet.name', 'starttime', 'CompletionDate', 'Completed', 'Location'
     ];
 
     var heads = ['Row', 'Menu', 'Notes', 'Move', 'Production Status', 'Order Date', 'Batch', 'Serum Batches', 'Stimulant Batches', 'Bottle Labels QTY', 'Cylinder Labels QTY', 'Exp. Date', 'Order ID', 'Code', 'Description', 'Priority', 'Customer', 'Brand',
-        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Label', 'Outer Box',
+        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Label', 'Outer Box', 'Booklet',
         'Start Date', 'Completion Date', 'Production Completed', 'Location'
     ];
 
@@ -1711,8 +1712,10 @@ function buildSLPrintingTable(data) {
                 html += '<td>' + formatDateDisplay(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'packagingType.name') {
                 html += '<td>' + data[i]['packagingType']['name'] + '</td>';
-            } else if (keys[j] == 'boxname.name') {
-                html += '<td>' + data[i]['boxname']['name'] + '</td>';
+            }else if (keys[j] == 'boxname.name') {
+                html += '<td>' +  (data[i]['boxname']? data[i]['boxname']['name'] : '') + '</td>';
+            }  else if (keys[j] == 'booklet.name') {
+                html += '<td>' + (data[i]['booklet']? data[i]['booklet']['name'] : '')+ '</td>';
             } else if (keys[j] == 'CompletionDate' || keys[j] == 'starttime') {
                 html += '<td>' + formatDateDisplay2(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'move') {
@@ -1771,11 +1774,11 @@ function buildSLLabellingTable(data) {
     var rowsTotal = 0;
 
     var keys = ['row', 'menu', 'notes', 'move', 'production_status', 'orderdate', 'batch', 'serumBatchCode', 'stimulantBatchCode', 'orderID', 'productcode', 'productdescription', 'priority', 'customer',
-        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'botlabel', 'boxname.name', 'starttime', 'CompletionDate', 'Completed', 'Location'
+        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'botlabel', 'boxname.name', 'booklet.name', 'starttime', 'CompletionDate', 'Completed', 'Location'
     ];
 
     var heads = ['Row', 'Menu', 'Notes', 'Move', 'Production Status', 'Order Date', 'Batch', 'Serum Batches', 'Stimulant Batches', 'Order ID', 'Code', 'Description', 'Priority', 'Customer', 'Brand',
-        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Label', 'Outer Box',
+        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Label', 'Outer Box', 'Booklet',
         'Start Date', 'Completion Date', 'Production Completed', 'Location'
     ];
 
@@ -1853,8 +1856,10 @@ function buildSLLabellingTable(data) {
                 html += '<td>' + formatDateDisplay(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'packagingType.name') {
                 html += '<td>' + data[i]['packagingType']['name'] + '</td>';
-            } else if (keys[j] == 'boxname.name') {
-                html += '<td>' + data[i]['boxname']['name'] + '</td>';
+            }else if (keys[j] == 'boxname.name') {
+                html += '<td>' +  (data[i]['boxname']? data[i]['boxname']['name'] : '') + '</td>';
+            }  else if (keys[j] == 'booklet.name') {
+                html += '<td>' + (data[i]['booklet']? data[i]['booklet']['name'] : '')+ '</td>';
             } else if (keys[j] == 'CompletionDate' || keys[j] == 'starttime') {
                 html += '<td>' + formatDateDisplay2(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'move') {
@@ -1910,11 +1915,11 @@ function buildSLPackagingTable(data) {
     var rowsTotal = 0;
 
     var keys = ['row', 'menu', 'notes', 'move', 'production_status', 'printing_status', 'orderdate', 'batch', 'serumBatchCode', 'stimulantBatchCode', 'orderID', 'productcode', 'productdescription', 'PRINTCODE', 'priority', 'customer',
-        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'boxname.name', 'starttime', 'CompletionDate', 'final_status', 'Location'
+        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'boxname.name', 'booklet.name', 'starttime', 'CompletionDate', 'final_status', 'Location'
     ];
 
     var heads = ['Row', 'Menu', 'Notes', 'Move', 'Production Status', 'Printing Status', 'Order Date', 'Batch', 'Serum Batches', 'Stimulant Batches', 'Order ID', 'Code', 'Description', 'Packaging Code', 'Priority', 'Customer', 'Brand',
-        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Outer Box',
+        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Outer Box', 'Booklet',
         'Start Date', 'Completion Date', 'Packaging Completed', 'Location'
     ];
 
@@ -1996,8 +2001,10 @@ function buildSLPackagingTable(data) {
                 html += '<td>' + formatDateDisplay(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'packagingType.name') {
                 html += '<td>' + data[i]['packagingType']['name'] + '</td>';
-            } else if (keys[j] == 'boxname.name') {
-                html += '<td>' + data[i]['boxname']['name'] + '</td>';
+            }else if (keys[j] == 'boxname.name') {
+                html += '<td>' +  (data[i]['boxname']? data[i]['boxname']['name'] : '') + '</td>';
+            }  else if (keys[j] == 'booklet.name') {
+                html += '<td>' + (data[i]['booklet']? data[i]['booklet']['name'] : '')+ '</td>';
             } else if (keys[j] == 'CompletionDate' || keys[j] == 'starttime') {
                 html += '<td>' + formatDateDisplay2(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'move') {
@@ -2383,8 +2390,10 @@ function buildShippingTable(data) {
                 html += '<td>' + formatDateDisplay(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'packagingType.name') {
                 html += '<td>' + data[i]['packagingType']['name'] + '</td>';
-            } else if (keys[j] == 'boxname.name') {
-                html += '<td>' + data[i]['boxname']['name'] + '</td>';
+            }else if (keys[j] == 'boxname.name') {
+                html += '<td>' +  (data[i]['boxname']? data[i]['boxname']['name'] : '') + '</td>';
+            }  else if (keys[j] == 'booklet.name') {
+                html += '<td>' + (data[i]['booklet']? data[i]['booklet']['name'] : '')+ '</td>';
             } else if (keys[j] == 'CompletionDate' || keys[j] == 'starttime') {
                 html += '<td>' + formatDateDisplay2(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'move') {

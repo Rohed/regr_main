@@ -13,6 +13,7 @@ function toPrinting(data) {
         'numLabelsBottles': data.numLabelsBottles,
         'numLabelsTubes': data.numLabelsTubes,
         'boxname': data.boxname,
+         'booklet': data.booklet,
         'priority': data.priority,
         'recipe': data.recipe,
         'batch': data.batch,
@@ -76,6 +77,7 @@ function toLabelling(data) {
         packlabel: data.packlabel,
         packlabelsku: data.packlabelsku,
         'boxname': data.boxname,
+         'booklet': data.booklet,
         'priority': data.priority,
         'recipe': data.recipe,
         'batch': data.batch,
@@ -137,6 +139,7 @@ function toProduction(data) {
         packlabel: data.packlabel,
         packlabelsku: data.packlabelsku,
         'boxname': data.boxname,
+         'booklet': data.booklet,
         'priority': data.priority,
         'recipe': data.recipe,
         'batch': data.batch,
@@ -204,6 +207,7 @@ function toPackaging(data) {
         packlabel: data.packlabel,
         packlabelsku: data.packlabelsku,
         'boxname': data.boxname,
+         'booklet': data.booklet,
         'priority': data.priority,
         'recipe': data.recipe,
         'batch': data.batch,
@@ -329,8 +333,9 @@ function moveMain(item) {
             }
 
             var boxname = order.boxname.sku;
+             var bookletSKU= order.booklet.sku;
             var label = order.botlabelsku;
-
+            var bookletSKU = order.booklet.sku;
 
             if (diff > 0) {
                 fromReservedtoRunning('Lids/' + item.lidSKU, diff);
@@ -364,6 +369,11 @@ function moveMain(item) {
                         if (boxname) {
                             fromReservedtoRunning('Boxes/' + boxname, box);
                             LOGARR.push([boxname, box]);
+                        }
+                     
+                        if (bookletSKU) {
+                            fromReservedtoRunning('Booklets/' + bookletSKU, box);
+                            LOGARR.push([bookletSKU, box]);
                         }
 
                         fromReservedtoRunning('Packages/' + item.packagingType.sku, tubes);
@@ -408,7 +418,11 @@ function moveMain(item) {
                             fromRunningtoReserved('Boxes/' + boxname, box);
                             LOGARR.push([boxname, box]);
                         }
-
+ 
+                        if (bookletSKU) {
+                            fromRunningtoReserved('Booklets/' + bookletSKU, box);
+                            LOGARR.push([bookletSKU, box]);
+                        }
                         fromRunningtoReserved('Packages/' + item.packagingType.sku, tubes);
                         LOGARR.push([item.packagingType.sku, tubes]);
 
@@ -538,6 +552,7 @@ function moveMain(item) {
         var packink = packData.ink;
         var tube = packData.botperPack;
         var boxname = order.boxname.sku;
+         var bookletSKU= order.booklet.sku;
         var tubes = botQ2 / tube;
         var box = tubes / packData.divTubesForBox;
         if (tube) {
@@ -571,6 +586,7 @@ function moveMain(item) {
         var packink = packData.ink;
         var tube = packData.botperPack;
         var boxname = order.boxname.sku;
+         var bookletSKU= order.booklet.sku;
         var suffix = item.batch.substr(-1);
         var for_branded_stock = suffix == BRANDED_STOCK_SUFFIX ? true : false;
         var tubes = item.bottles / tube;
@@ -589,7 +605,10 @@ function moveMain(item) {
                     fromReservedtoCompleted('Boxes/' + boxname, box);
                     LOGARR.push([boxname, box]);
                 }
-
+                if (bookletSKU) {
+                    fromReservedtoCompleted('Booklets/' + bookletSKU, box);
+                    LOGARR.push([bookletSKU, box]);
+                }
                 fromReservedtoCompleted('Packages/' + item.packagingType.sku, tubes);
                 LOGARR.push([item.packagingType.sku, tubes]);
                 BtoCompleteX(brandname, tominBPack);

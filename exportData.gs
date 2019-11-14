@@ -318,13 +318,13 @@ function export (tabs) {
             var data = JSONtoARR(baseData);
 
             var headerRow = ['Product Code', 'Product Description', 'Premix SKU Serum', 'Premix Description Serum', 'Premix SKU Stimulant', 'Premix Description Stimulant', 'Brand', 'Brand SKU',
-                'Bottle', 'Bottle SKU', 'Tube', 'Tube SKU', 'Fill', 'Cap', 'Cap SKU', 'Packaging', 'Packaging SKU', 'Use Comb', 'Bottle/Tube Multiplier', 'Comb Multiplier', 'Box', 'Box SKU',
+                'Bottle', 'Bottle SKU', 'Tube', 'Tube SKU', 'Fill', 'Cap', 'Cap SKU', 'Packaging', 'Packaging SKU', 'Use Comb', 'Bottle/Tube Multiplier', 'Comb Multiplier', 'Box', 'Box SKU', 'Booklet', 'Booklet SKU',
                 'Bottle Label', 'Bottle Label SKU', 'Pre Printed Bottle Label', 'Pre Printed Bottle Label SKU', 'Pack Label', 'Pack Label SKU', 'Pre Printed Pack Label',
                 'Pre Printed Pack Label SKU', 'Barcode', 'ECID', 'Price'
             ];
             var keyRow = ['prod', 'descr', 'premixSKUSerum', 'premixdescrSerum', 'premixSKUStimulant', 'premixdescrStimulant', 'brand', 'brandSKU', 'btype', 'botSKU', 'tubeType', 'tubeSKU',
                 'fill', 'lid', 'lidSKU', 'packagingType.name', 'packagingType.sku', 'usecomb', 'multipliers.bottles', 'multipliers.combs',
-                'boxname.name', 'boxname.sku', 'botlabel', 'botlabelsku', 'ppbotlabel', 'ppbotlabelsku', 'packlabel', 'packlabelsku', 'pppacklabel', 'pppacklabelsku', 'barcode', 'ecid', 'price'
+                'boxname.name', 'boxname.sku','booklet.name', 'booklet.sku', 'botlabel', 'botlabelsku', 'ppbotlabel', 'ppbotlabelsku', 'packlabel', 'packlabelsku', 'pppacklabel', 'pppacklabelsku', 'barcode', 'ecid', 'price'
             ];
             var values = [];
             for (var i = 0; i < data.length; i++) {
@@ -393,6 +393,29 @@ function export (tabs) {
             }
             values.unshift(headerRow);
             var sheet = file.insertSheet('Boxes');
+            sheet.getRange(1, 1, values.length, values[0].length).setValues(values);
+
+        } else if (tabs[j] == 'Booklets') {
+            var data = JSONtoARR(base.getData('Booklets'));
+            var headerRow = ['SKU', 'Name'];
+            var keys = ['sku', 'name'];
+            var values = [];
+            for (var i = 0; i < data.length; i++) {
+
+                try {
+                    var row = [];
+                    for (var k = 0; k < keys.length; k++) {
+                        row.push(data[i][keys[k]]);
+                    }
+
+                    values.push(row);
+                } catch (e) {
+                    Logger.log(data[i]);
+                }
+
+            }
+            values.unshift(headerRow);
+            var sheet = file.insertSheet('Booklets');
             sheet.getRange(1, 1, values.length, values[0].length).setValues(values);
 
         } else if (tabs[j] == 'Customers') {
@@ -613,6 +636,22 @@ function getQTYFull() {
 
         for (var i = 0; i < result.length; i++) {
             result[i][1].Category = 'Boxes';
+            retArr.push(result[i][1]);
+
+        }
+
+    }
+    
+    retArr.push('-', '-', '-', '-', '-');
+    var packages = base.getData('Booklets');
+
+    if (packages) {
+        var result = Object.keys(packages).map(function(key) {
+            return [Number(key), packages[key]];
+        });
+
+        for (var i = 0; i < result.length; i++) {
+            result[i][1].Category = 'Booklets';
             retArr.push(result[i][1]);
 
         }

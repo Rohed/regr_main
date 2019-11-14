@@ -857,6 +857,83 @@
     </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="newBooklet" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> Booklet</h4>
+                <button class='btn btn-danger' style='display:none;' id='delete_edit_booklet'>Remove</button>
+
+            </div>
+            <div id='newBookletBody' class="newBookletBody">
+
+                <table class='table'>
+                    <tr>
+                        <td>Name:</td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" id="bookletName" class="form-control" placeholder="Booklet US" aria-describedby="sizing-addon2">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SKU:</td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" id="bookletSKU" class="form-control" placeholder="BOOKLET2931" aria-describedby="sizing-addon2">
+                            </div>
+                        </td>
+                    </tr>
+ 
+
+                </table>
+
+            </div>
+            <div id='editBookletBody' class="editBookletBody">
+
+                <table class='table'>
+                    <tr>
+                        <td>Name:</td>
+                        <td>
+
+                            <div class="input-group">
+                                <input autocomplete="on" class="form-control" id="ebookletName" placeholder="Booklet US" onkeyup="showGLOBAL(this)" aria-describedby="sizing-addon2" />
+                            </div>
+                            <div id="DropdownBookletNames">
+                                <select name="BookletNames" id="BookletNames" onclick='helperSETVAL(this)'></select>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SKU:</td>
+                        <td>
+
+                            <div class="input-group">
+                                <input autocomplete="on" class="form-control" id="ebookletSKU" placeholder="BOOKLET2931" onkeyup="showGLOBAL(this)" aria-describedby="sizing-addon2" />
+                            </div>
+                            <div id="DropdownBookletSKU">
+                                <select name="BookletSKUS" id="BookletSKUS" onclick='helperSETVAL(this)'></select>
+                            </div>
+
+                        </td>
+                    </tr>
+
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id='subBookletForm' type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="newLabel" role="dialog">
     <div class="modal-dialog">
@@ -1292,6 +1369,9 @@
                         <input type="checkbox" page='Boxes' name='expCheckbox' class="form-check-input"> Boxes
                     </label>
                     <label class="form-check-label">
+                        <input type="checkbox" page='Booklets' name='expCheckbox' class="form-check-input"> Booklets
+                    </label>
+                    <label class="form-check-label">
                         <input type="checkbox" page='Customers' name='expCheckbox' class="form-check-input"> Customers
                     </label>
                     <label class="form-check-label">
@@ -1678,7 +1758,29 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="newBookletsFromSheet" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Import Booklets from Sheet</h4>
+            </div>
+            <div class="modal-body7">
+                <p>Before Upload Please check that your spreadsheet follows the desired format.</p>
 
+                <div class="input-group">
+                    <input class="form-control" type="text" id="mysheet15" aria-describedby="sizing-addon2" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="save_sheet_btn15">Upload Sheet</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade bd-example-modal-lg" id="newPCDmodal" role="dialog">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
@@ -1805,6 +1907,7 @@
                     </tr>
                     <tr>
                         <td>Box</td>
+                         <td>Booklet</td>
                         <td>Bottle Label</td>
                         <td>Pre Printed Bottle Label</td>
                         <td>Pack Label</td>
@@ -1813,6 +1916,9 @@
                     <tr>
                         <td>
                             <select class="form-control" id='newboxname'></select>
+                        </td> 
+                        <td>
+                            <select class="form-control" id='newbookletname'></select>
                         </td>
                         <td>
                             <select class="form-control" id='newbotlabel'></select>
@@ -1974,6 +2080,7 @@
                     </tr>
                     <tr>
                         <td>Box</td>
+                         <td>Booklet</td>
                         <td>Bottle Label</td>
                         <td>Pre Printed Bottle Label</td>
                         <td>Pack Label</td>
@@ -1983,10 +2090,13 @@
                         <td>
                             <select class="form-control" id='editboxname' aria-describedby="sizing-addon2"></select>
                         </td>
+                          <td>
+                            <select class="form-control" id='editbookletname'></select>
+                        </td>
                         <td>
                             <select class="form-control" id='editbotlabel'></select>
                         </td>
-
+                      
                         <td>
                             <select class="form-control" id='editppbotlabel'></select>
                         </td>

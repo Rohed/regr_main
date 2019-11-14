@@ -320,6 +320,7 @@ function fromProduction(batch, bottles) {
             var packink = packData.ink;
             var tube = packData.botperPack;
             var boxname = order.boxname.sku;
+            var bookletSKU = order.booklet.sku;
             var packs = removeFromProduction / tube;
             var box = packs / packData.divTubesForBox;
             if (!isFinite(box)) {
@@ -335,12 +336,21 @@ function fromProduction(batch, bottles) {
                     removeFromReserved('Packages/' + order.packagingType.sku, packs);
                 }
                 if (boxname) {
-                    USAGE.Boxes = {
-                        sku: boxname,
-                        qty: box
-                    }
-                    LOGARR.push(['To Running: ' + boxname, box]);
-                    removeFromReserved('Boxes/' + boxname, box);
+                  USAGE.Boxes = {
+                    sku: boxname,
+                    qty: box
+                  }
+                  LOGARR.push(['To Running: ' + boxname, box]);
+                  removeFromReserved('Boxes/' + boxname, box);
+                  
+                }
+                if(bookletSKU){
+                  USAGE.Booklets = {
+                    sku: bookletSKU,
+                    qty: box
+                  }
+                  LOGARR.push(['To Running: ' + bookletSKU, box]);
+                  removeFromReserved('Booklets/' + bookletSKU, box);
                 }
             } else {
                 if (tube && !removedFromLabelling) {
@@ -392,6 +402,7 @@ function fromPackaging(batch, bottles) {
             var packink = packData.ink;
             var tube = packData.botperPack;
             var boxname = order.boxname.sku;
+             var bookletSKU = order.booklet.sku;
             var packs = removeFromProduction / tube;
             var box = packs / packData.divTubesForBox;
             if (!isFinite(box)) {
@@ -413,6 +424,14 @@ function fromPackaging(batch, bottles) {
                     }
                     LOGARR.push(['To Running: ' + boxname, box]);
                     removeFromReserved('Boxes/' + boxname, box);
+                }
+                if(bookletSKU){
+                  USAGE.Booklets = {
+                    sku: bookletSKU,
+                    qty: box
+                  }
+                  LOGARR.push(['To Running: ' + bookletSKU, box]);
+                  removeFromReserved('Booklets/' + bookletSKU, box);
                 }
             } else {
                 if (tube != 0) {
@@ -615,6 +634,7 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
         var packink = packData.ink;
         var pack = packData.botperPack;
         var boxname = order.boxname.sku;
+        var bookletSKU = order.booklet.sku;
         var suffix = order.batch.substr(-1);
         var for_branded_stock = suffix == BRANDED_STOCK_SUFFIX ? true : false;
         var packs = item.bottles / pack;
@@ -628,6 +648,9 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
           if (boxname) {
             fromReservedtoRunning('Boxes/' + boxname, box);
           }
+           if (bookletSKU) {
+            fromReservedtoRunning('Booklets/' + bookletSKU, box);
+          }
           fromReservedtoRunning('BrandedTypes/' + brandname, tominBPack);
         }
         
@@ -640,6 +663,9 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
           if (boxname) {
             fromCompletedtoRunning('Boxes/' + boxname, box);
           } 
+          if (bookletSKU) {
+            fromCompletedtoRunning('Booklets/' + bookletSKU, box);
+          }
         }
         
       }
@@ -654,6 +680,7 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
         var packink = packData.ink;
         var pack = packData.botperPack;
         var boxname = order.boxname.sku;
+         var bookletSKU = order.booklet.sku;
         var suffix = order.batch.substr(-1);
         var for_branded_stock = suffix == BRANDED_STOCK_SUFFIX ? true : false;
         var packs = item.bottles / pack; 
@@ -667,6 +694,9 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
             if (boxname) {
               fromCompletedtoRunning('Boxes/' + boxname, box);
             }
+            if (bookletSKU) {
+              fromCompletedtoRunning('Booklets/' + bookletSKU, box);
+            }
             fromCompletedtoRunning('BrandedTypes/' + brandname, tominBPack);
           }
           
@@ -679,7 +709,9 @@ function reverseLineItemMove(sheetItem, order, item, sheet, key) {
                 if (boxname) {
                     fromCompletedtoRunning('Boxes/' + boxname, box);
                 }
-               
+                if (bookletSKU) {
+                    fromCompletedtoRunning('Booklets/' + bookletSKU, box);
+                }
             }
         }
       if(item.usecomb && for_branded_stock){

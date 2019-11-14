@@ -20,6 +20,11 @@ function getFormData(add) {
             return item
         }
     }).sort(sortSTRINGHL('name'));
+    var booklets = JSONtoARR(base.getData('Booklets')).filter(function(item) {
+        if (item.name) {
+            return item
+        }
+    }).sort(sortSTRINGHL('name'));
     var labels = JSONtoARR(base.getData('Labels')).filter(function(item) {
         if (item.name) {
             return item
@@ -36,6 +41,7 @@ function getFormData(add) {
         'PD': PD,
         'PC': PC,
         'boxes': boxes,
+        booklets:booklets,
         'labels': labels,
         batch:batch,
     };
@@ -317,7 +323,9 @@ var date_sort_asc = function(date1, date2) {
     return 0;
 };
 
-
+function TESTEGETORDERDATA(){
+getOrderData('910000')
+}
 function getOrderData(batch) {
     //batch=901001;
     var olddata = base.getData('Orders/' + batch);
@@ -328,7 +336,44 @@ function getOrderData(batch) {
     
     
   }
-    var data = getFormData();
+    var PC = getProductCodes();
+  var PD = PC;
+  
+    var bottletypes = getBottlesDropdown();
+    var lids = getLidDropdown();
+    var packagings = getPackagingDropdown();
+    var customers = getCustomerDropdown();
+    var brands = getBrandDropdown();
+    var boxes = JSONtoARR(base.getData('Boxes')).filter(function(item) {
+        if (item.name) {
+            return item
+        }
+    }).sort(sortSTRINGHL('name'));
+    var booklets = JSONtoARR(base.getData('Booklets')).filter(function(item) {
+        if (item.name) {
+            return item
+        }
+    }).sort(sortSTRINGHL('name'));
+    var labels = JSONtoARR(base.getData('Labels')).filter(function(item) {
+        if (item.name) {
+            return item
+        }
+    }).sort(sortSTRINGHL('name'));
+    
+    var batch = getLargestBatchForm(null)
+    var data = {
+        'bottletypes': bottletypes,
+        'lids': lids,
+        'packagings': packagings,
+        'customers': customers,
+        'brands': brands,
+        'PD': PD,
+        'PC': PC,
+        'boxes': boxes,
+        booklets:booklets,
+        'labels': labels,
+        batch:batch,
+    };
 
 
 
@@ -1052,16 +1097,16 @@ function save_PCD(obj, old, editold) {
     if (editold) {
         //base.removeData('References/Descriptions/'+old.descr);
         //base.removeData('References/ProductCodes/'+old.prod);
-        var descr = obj.productdescription;
-        var prod = obj.productcode;
+        var descr = obj.productdescription || '';
+        var prod = obj.productcode || '';
         descr = descr.replace(/&/g, '').replace('&', '').replace('/', '').replace('(', '').replace(')', '').replace('.', '');
         prod = prod.replace(/&/g, '').replace('&', '').replace('/', '').replace('(', '').replace(')', '').replace('.', '');
         obj.prod = prod;
         obj.descr = descr; 
         base.updateData('References/ProductCodes/' + prod, obj);
         var descr2 = descr.split(': ');
-        var name2 = descr2[1].replace('3 x 10ml', '10ml').replace('4 x 10ml', '10ml').replace(/\./g, "");
-        generateForSingleUnbrand2(obj.unbrandSKU, name2);
+        var name2 = (descr2[1] || '').replace('3 x 10ml', '10ml').replace('4 x 10ml', '10ml').replace(/\./g, "");
+        
 
         var name3 = name2.split(' ');
         var premixname = [];
@@ -1084,7 +1129,7 @@ function save_PCD(obj, old, editold) {
         generateForSingleBrand3(prod, descr);
         var descr2 = descr.split(': ');
         var name2 = descr2[1].replace('3 x 10ml', '10ml').replace('4 x 10ml', '10ml').replace(/\./g, "");
-        generateForSingleUnbrand2(obj.unbrandSKU, name2);
+       
 
         var name3 = name2.split(' ');
         var premixname = [];
@@ -1102,14 +1147,48 @@ function save_PCD(obj, old, editold) {
 }
 
 function getEPCandFormdata(PC) {
-    //PC='UNIO1005';
-    Logger.log('PC  ' + PC);
+    // PC='REGWEN3';
+    Logger.log('PC-' + PC);
     try {
-        var formdata = getFormData();
-
+      //  var formdata = getFormData();
+    var bottletypes = getBottlesDropdown();
+    var lids = getLidDropdown();
+    var packagings = getPackagingDropdown();
+    var customers = getCustomerDropdown();
+    var brands = getBrandDropdown();
+    var boxes = JSONtoARR(base.getData('Boxes')).filter(function(item) {
+        if (item.name) {
+            return item
+        }
+    }).sort(sortSTRINGHL('name'));
+    var booklets = JSONtoARR(base.getData('Booklets')).filter(function(item) {
+        if (item.name) {
+            return item
+        }
+    }).sort(sortSTRINGHL('name'));
+    var labels = JSONtoARR(base.getData('Labels')).filter(function(item) {
+        if (item.name) {
+            return item
+        }
+    }).sort(sortSTRINGHL('name'));
+    
+ 
+    var data = {
+        'bottletypes': bottletypes,
+        'lids': lids,
+        'packagings': packagings,
+        'customers': customers,
+        'brands': brands,
+        
+        'boxes': boxes,
+        booklets:booklets,
+        'labels': labels, 
+    };
         var EPC = base.getData('References/ProductCodes/' + PC);
-        var EPD = EPC.descr;
-        var arr = [formdata, EPC, EPD, 'EPC']
+        var EPD = EPC.productdescription;
+        
+        
+        var arr = [data, EPC, EPD, 'EPC']
         return arr;
     } catch (e) {
         return false;
@@ -1289,7 +1368,11 @@ function remove_box(key) {
     return 'Box Removed.';
 
 }
+function remove_booklet(key) {
+    base.removeData('Booklets/' + key);
+    return 'Booklet Removed.';
 
+}
 function remove_Label(key) {
     base.removeData('Labels/' + key);
     return 'Label Removed.';
@@ -1494,6 +1577,7 @@ function refreshOrderPC() {
             var dataPC = base.getData("References/ProductCodes/" + list[i].productcode)
             if (dataPC) {
                 list[i].boxname = dataPC.boxname;
+                list[i].booklet = dataPC.booklet;
                 list[i].fill = dataPC.fill;
                 list[i].brand = dataPC.brand;
                 list[i].brandSKU = dataPC.brandSKU; 

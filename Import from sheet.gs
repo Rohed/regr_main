@@ -97,6 +97,7 @@ function QTYInport(id) {
         ['Flavours', 'Flavours', 'FLAV', 'float'],
         ['Packages', 'Packages', 'PAC', 'int'],
         ['Boxes', 'Boxes', 'BOX', 'int'],
+        ['Booklets', 'Booklets', 'BOOK', 'int'],
         ['Labels', 'Labels', 'LAB', 'int'],
         ['Colors', 'Color', 'COL', 'float'],
         ['Premix', 'PremixesTypes', 'GBMIX', 'float'],
@@ -453,7 +454,70 @@ function importBoxesFromSheet(id) {
     }
     return LOGDATA.msg;
 }
-
+function importBookletsFromSheet(id) {
+    var LOGDATA = {
+        status: true,
+        msg: '',
+        action: 'Import Booklets',
+        batch: 'Spreadsheet',
+        page: 'Booklets',
+        user: Session.getActiveUser().getEmail(),
+        data: new Array()
+    };
+    //id = '1n83FCqn4cSH5GQWDJ4BpuSuU7lOzURrXi-a807M4Wck';
+    //  var keys=['sku','name','divTubesForBox'];
+    var ss = SpreadsheetApp.openById(id);
+    LOGDATA.batch = ss.getName();
+    var data = ss.getSheets()[0].getDataRange().getValues();
+    var options = "{";
+    var origItems = base.getData('Booklets');
+    if (!origItems) {
+        origItems = {};
+    }
+    for (var i = 1; i < data.length; i++) {
+        var sku = data[i][0];
+        var name = data[i][1];
+        if (sku == '') {
+            LOGDATA.data.push(['Failed - NO ID:', name]);
+            LOGDATA.msg += 'Failed - NO ID: ' + name + '\n';
+            continue;
+        }
+        if (data[i][2] == 'Y') {
+            base.removeData('Booklets/' + sku);
+            delete origItems[sku];
+            LOGDATA.data.push(['Removed:', sku]);
+            continue;
+        }
+    
+        var booklet = {
+            sku: sku,
+            name: name, 
+            Running: 0,
+            Reserved: 0,
+            Completed: 0,
+        };
+        if (!origItems[sku]) {
+            origItems[sku] = booklet;
+        } else {
+            origItems[sku].name = name; 
+        }
+        options += '"' + booklet.sku + '":' + JSON.stringify(booklet) + ',';
+        LOGDATA.data.push(['Added:', sku + ' - ' + name]);
+        LOGDATA.msg += 'Added ' + sku + '- ' + name + ' \n ';
+    }
+    options += '}';
+    try {
+        var upload = JSON.parse(options);
+        base.updateData('Booklets', origItems);
+        logItem(LOGDATA);
+    } catch (e) {
+        LOGDATA.status = false;
+        LOGDATA.data.push(['FAILED:', e.toString()]);
+        LOGDATA.msg = 'Failed ' + e.toString + '- ' + LOGDATA.msg + ' \n ';
+        logItem(LOGDATA);
+    }
+    return LOGDATA.msg;
+}
 function cliearItems() {
     var id = '1QyZ2Epsq_MfhAhA43NCi4JDB_ymzgb0j2jKwHlu5Ac0';
     importPackagesFromSheet(id)
@@ -1061,7 +1125,7 @@ function importInventoryData(id) {
         data: new Array()
     };
     try {
-        var pages = ['Misc',  'Labels', 'Boxes', 'Packages',  'BottleTypes', 'Lids', 'PremixesTypes',  'BrandedTypes'];
+        var pages = ['Misc',  'Labels', 'Boxes', 'Booklets', 'Packages',  'BottleTypes', 'Lids', 'PremixesTypes',  'BrandedTypes'];
         var ss = SpreadsheetApp.openById(id);
         LOGDATA.batch = ss.getName();
         var data = ss.getSheets()[0].getDataRange().getDisplayValues();

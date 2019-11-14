@@ -89,6 +89,10 @@ function newBasicItem(name, page) {
             LOGDATA.batch = name.name;
             LOGDATA.data.push(['New Box', name.name]);
             generateForSingleBox(name);
+        }  else if (page == 'Booklets') {
+            LOGDATA.batch = name.name;
+            LOGDATA.data.push(['New Booklet', name.name]);
+            generateForSingleBooklet(name);
         } else if (page == 'Recipes') {
 
             var dbname = generateForSingleRecipe(name);
@@ -420,6 +424,15 @@ function generateForSingleBox(name) {
     name.Completed = 0;
 
     base.updateData('Boxes/' + name.sku, name);
+}
+
+function generateForSingleBooklet(obj){
+  obj.Running = 0;
+  obj.Reserved = 0;
+  obj.Completed = 0;
+  
+  base.updateData('Booklets/' + obj.sku, obj);
+
 }
 
 function generateForSingleRecipe(item) {

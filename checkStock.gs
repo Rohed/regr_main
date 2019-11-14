@@ -18,12 +18,14 @@ function checkStockValues(BATCHES) {
     var requiredTubes = 0;
     var requiredPremix = 0;
     var requiredBoxes = 0;
+    var requiredBooklets = 0;
     var requiredPacks = 0;
     var availableCombs = 0;
     var availableLids = 0;
     var availableBottles = 0;
     var availablePremix = 0;
     var availableBoxes = 0;
+    var availableBooklets = 0;
     var availablePacks = 0;
     var LidsArr = [];
     var PremixArr = [];
@@ -32,6 +34,7 @@ function checkStockValues(BATCHES) {
     var BoxesArr = [];
     var PackedArr = [];
     var BoxArr = [];
+    var BookletArr = [];
     var PacksArr = [];
     var LabelsArr = [];
     var InkArr = [];
@@ -39,10 +42,12 @@ function checkStockValues(BATCHES) {
     var OrigPacksArr = [];
     var OrigLabelsArr = [];
     var OrigBoxArr = [];
+    var OrigBookletArr = [];
     var OrigPmixArr = [];
     var OrigBottlesArr = [];
     var OrigTubesArr = [];
     var OrigBoxesArr = [];
+    var OrigBookletsArr = [];
     var OrigPackedArr = [];
     var OrigLidsArr = [];
     var OrigPackedArr = [];
@@ -59,6 +64,7 @@ function checkStockValues(BATCHES) {
                 var packink = packData.ink;
                 var tube = packData.botperPack;
                 var boxname = data.boxname.sku;
+                var bookletSKU = data.booklet.sku;
                 var Packs = data.bottles / tube;
                 var box = Packs / packData.divTubesForBox;
                 var PacksCheck = base.getData("Packages/" + data.packagingType.sku);
@@ -263,6 +269,7 @@ function checkStockValues(BATCHES) {
                 var packink = packData.ink;
                 var tube = packData.botperPack;
                 var boxname = data.boxname.sku;
+                 var bookletSKU = data.booklet.sku;
                 var Packs = data.bottles / tube;
                 var box = Packs / packData.divTubesForBox;
                 var brandedstockP = base.getData('BrandedTypes/' + brandname);
@@ -282,6 +289,24 @@ function checkStockValues(BATCHES) {
                         BoxArr[exists2][1] += BoxOBJ.used;
                         BoxArr[exists2][2] += BoxOBJ.left;
                         BoxArr[exists2][3] += box;
+                    }
+                }
+                 if (bookletSKU) {
+                    var BookletCheck = base.getData("Booklets/" + boxname);
+                    var exists3 = OrigBookletArr.getIndex(bookletSKU);
+                    if (exists3 == -1) {
+                        OrigBookletArr.push([bookletSKU, BookletCheck.Running]);
+                    }
+                    exists3 = OrigBookletArr.getIndex(bookletSKU);
+                    var BookletObj = checkALL(OrigBookletArr[exists3][1], box);
+                    OrigBookletArr[exists3][1] = BookletObj.running;
+                    var exists2 = BookletArr.getIndex(bookletSKU);
+                    if (exists2 == -1) {
+                        BookletArr.push([bookletSKU, BookletObj.used, BookletObj.left, box])
+                    } else {
+                        BookletArr[exists2][1] += BookletObj.used;
+                        BookletArr[exists2][2] += BookletObj.left;
+                        BookletArr[exists2][3] += box;
                     }
                 }
                 var exists1 = OrigPackedArr.getIndex(brandname);
@@ -306,6 +331,7 @@ function checkStockValues(BATCHES) {
                             var packink = packData.ink;
                             var tube = packData.botperPack;
                             var boxname = data.boxname.sku;
+                            var bookletSKU = data.booklet.sku;
                             var Packs = data.bottles / tube;
                             var box = Packs / packData.divTubesForBox;
                             var PacksCheck = base.getData("Packages/" + data.packagingType.sku);
@@ -521,6 +547,7 @@ function checkStockValues(BATCHES) {
   var PremixMSG = 'Premixes: <br>';
   var PBbottleMSG = 'Packaged Branded Bottles: <br>';
   var BoxMSG = 'Boxes: <br>';
+  var BookletMSG = 'Booklet: <br>';
   var LabelMSG = 'Labels: <br>';
 
    var PackMSG = 'Pack Types: <br>';
@@ -610,6 +637,13 @@ function checkStockValues(BATCHES) {
         logDATA.push([running.name + ' ' + BoxArr[i][0], BoxArr[i][1], running.Running, BoxArr[i][2], BoxArr[i][3]]);
     }
     logDATA.push(['', '', '', '', '']);
+    logDATA.push(['Booklets', '', '', '', '']);
+    for (var i = 0; i < BookletArr.length; i++) {
+      var running = base.getData('Booklets/' + BookletArr[i][0]);
+      BookletMSG += BookletArr[i][0] + ":  -   Will Use: " + BookletArr[i][1] + " - Available: " + running + ' -  Missing: ' + BookletArr[i][2] + " - Required: " + BookletArr[i][3] + '<br>';
+      logDATA.push([running.name + ' ' + BookletArr[i][0], BookletArr[i][1], running.Running, BookletArr[i][2], BookletArr[i][3]]);
+    }
+    logDATA.push(['', '', '', '', '']);
     logDATA.push(['Labels', '', '', '', '']);
     for (var i = 0; i < LabelsArr.length; i++) {
         var running = base.getData('Labels/' + LabelsArr[i][0]);
@@ -634,7 +668,7 @@ function checkStockValues(BATCHES) {
   logDATA.push(['Combs', requiredCombs, availableCombs, missing, requiredCombs]);
  
     logDATA.push(['', '', '', '', '']);
-    var msg =  BottleMSG + "<hr>" + LidMSG + "<hr>" + PremixMSG + "<hr>"  + PBbottleMSG + "<hr>" + BoxMSG + "<hr>" + LabelMSG + "<hr>" + PackMSG+ "<hr>" + InkMSG + "<hr>" + CombMSG  + "<hr>" + failMSG;
+    var msg =  BottleMSG + "<hr>" + LidMSG + "<hr>" + PremixMSG + "<hr>"  + PBbottleMSG + "<hr>" + BoxMSG+ "<hr>" + BookletMSG + "<hr>" + LabelMSG + "<hr>" + PackMSG+ "<hr>" + InkMSG + "<hr>" + CombMSG  + "<hr>" + failMSG;
     var sheet = SpreadsheetApp.openById(logSheet).getSheetByName('Sheet1');
     sheet.insertRowsAfter(sheet.getMaxRows(), logDATA.length);
     sheet.getRange(sheet.getLastRow() + 4, 1, 1, 5).setBackground('#D9A744');

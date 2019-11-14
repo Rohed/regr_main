@@ -66,13 +66,7 @@ for(var i=0;i<flavours.length;i++){
 
   
 }
-function generateMulti(){
-generateQTYFlavoursJSON();
- generateQTYBottlesJSON();
-generateQTYLidsJSON();
-generateQTYPackagingJSON();
-generateQTYMiscJSON();
-}
+ 
 
 function generateQTYFlavours() {
 var flavours=getFlavourDropdown();
@@ -132,29 +126,9 @@ for(var i=0;i<packagings.length;i++){
 }
 }
 
-function generateQTYMisc() {
-var arr=['VG','PG','Nicotine','CBD','Labels 30ml bottle',
-'Labels 10ml bottle',
-'Labels 3product Tube',
-'Labels 1product Tube',
-'printing ink',
-'10product boxes',
-'15product boxes'
 
-];
 
-for(var i=0;i<arr.length;i++){
-  var options={
-  name:arr[i],
-    Running:0,
-    Reserved:0,
-    Completed:0
-  };
-   base.updateData('QTY/'+arr[i],options);
-
-}
-
-}
+ 
 
 function generateQTYUnbranded(){
 
@@ -613,37 +587,6 @@ options=JSON.parse(options);
 
 
 
-function generateQTYMiscJSON() {
-var arr=['VG','PG','Nicotine','CBD','Labels 30ml bottle',
-'Labels 10ml bottle',
-'Labels 3product Tube',
-'Labels 1product Tube',
-'printing ink',
-'10product boxes',
-'15product boxes'
-
-];
-
-
-var options='{';
-for(var i=0;i<arr.length;i++){
-      var item={
-     "sku":'MIS'+getRandom()+arr[i].substr(0,1).toUpperCase(),
-    "name":arr[i],
-    "Running":0,
-    "Reserved":0,
-    "Completed":0,
-  };
-
-options+='"'+arr[i]+'":'+JSON.stringify(item)+',';
-}
-options+='}';
-Logger.log(options);
-options=JSON.parse(options);
- base.updateData('Misc',options);
-
-
-}
 
 function generateMultiJSON(){
 

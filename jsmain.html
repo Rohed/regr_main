@@ -119,7 +119,12 @@ $('#save_sheet_btn14').on('click', function(e) {
     google.script.run.withSuccessHandler(save).importInventoryData(id);
 
 });
+$('#save_sheet_btn15').on('click', function(e) {
+    var id = $('#mysheet15').val();
+    $("#updating").css("display", "block");
+    google.script.run.withSuccessHandler(save).importBookletsFromSheet(id);
 
+});
 function save(msg) {
     msg = msg.replace(/<br\/?>/gi, '\n');
     $("#updating").css("display", "none");
@@ -1547,11 +1552,11 @@ function buildPrintingTable(data) {
     var tubelabels = 0;
 
     var keys = ['row', 'menu', 'notes', 'move', 'production_status', 'orderdate', 'batch', 'serumBatchCode', 'stimulantBatchCode', 'numLabelsBottles', 'numLabelsTubes', 'expDate', 'orderID', 'productcode', 'productdescription', 'priority', 'customer',
-        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'botlabel', 'boxname.name', 'starttime', 'CompletionDate', 'Completed', 'Location'
+        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'botlabel', 'boxname.name', 'booklet.name', 'starttime', 'CompletionDate', 'Completed', 'Location'
     ];
 
     var heads = ['Row', 'Menu', 'Notes', 'Move', 'Production Status', 'Order Date', 'Batch', 'Serum Batches', 'Stimulant Batches', 'Bottle Labels QTY', 'Cylinder Labels QTY', 'Exp. Date', 'Order ID', 'Code', 'Description', 'Priority', 'Customer', 'Brand',
-        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Label', 'Outer Box',
+        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Label', 'Outer Box', 'Booklets',
         'Start Date', 'Completion Date', 'Production Completed', 'Location'
     ];
 
@@ -1630,8 +1635,10 @@ function buildPrintingTable(data) {
             } else if (keys[j] == 'packagingType.name') {
                 html += '<td>' + data[i]['packagingType']['name'] + '</td>';
             } else if (keys[j] == 'boxname.name') {
-                html += '<td>' + data[i]['boxname']['name'] + '</td>';
-            } else if (keys[j] == 'CompletionDate' || keys[j] == 'starttime') {
+                html += '<td>' +  (data[i]['boxname']? data[i]['boxname']['name'] : '') + '</td>';
+            }  else if (keys[j] == 'booklet.name') {
+                html += '<td>' + (data[i]['booklet']? data[i]['booklet']['name'] : '')+ '</td>';
+            }else if (keys[j] == 'CompletionDate' || keys[j] == 'starttime') {
                 html += '<td>' + formatDateDisplay2(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'move') {
                 html += '<td><button page="Orders" batch="' + data[i].batch + '" onclick="moveUp(this)" id="moveUP"><i class="fa fa-arrow-up" aria-hidden="true"></i></button><button onclick="moveDown(this)" page="Orders" batch="' + data[i].batch + '" id="moveDOWN"><i class="fa fa-arrow-down" aria-hidden="true"></i></button></td>';
@@ -1691,11 +1698,11 @@ function buildLabellingTable(data) {
     var rowsTotal = 0;
 
     var keys = ['row', 'menu', 'notes', 'move', 'production_status', 'orderdate', 'batch', 'serumBatchCode', 'stimulantBatchCode', 'orderID', 'productcode', 'productdescription', 'priority', 'customer',
-        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'botlabel', 'boxname.name', 'starttime', 'CompletionDate', 'Completed', 'Location'
+        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'botlabel', 'boxname.name', 'booklet.name', 'starttime', 'CompletionDate', 'Completed', 'Location'
     ];
 
     var heads = ['Row', 'Menu', 'Notes', 'Move', 'Production Status', 'Order Date', 'Batch', 'Serum Batches', 'Stimulant Batches', 'Order ID', 'Code', 'Description', 'Priority', 'Customer', 'Brand',
-        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Label', 'Outer Box',
+        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Label', 'Outer Box', 'Booklet',
         'Start Date', 'Completion Date', 'Production Completed', 'Location'
     ];
 
@@ -1772,7 +1779,9 @@ function buildLabellingTable(data) {
             } else if (keys[j] == 'packagingType.name') {
                 html += '<td>' + data[i]['packagingType']['name'] + '</td>';
             } else if (keys[j] == 'boxname.name') {
-                html += '<td>' + data[i]['boxname']['name'] + '</td>';
+               html += '<td>' +  (data[i]['boxname']? data[i]['boxname']['name'] : '') + '</td>';
+            } else if (keys[j] == 'booklet.name') {
+               html += '<td>' +  (data[i]['booklet']? data[i]['booklet']['name'] : '') + '</td>';
             } else if (keys[j] == 'CompletionDate' || keys[j] == 'starttime') {
                 html += '<td>' + formatDateDisplay2(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'move') {
@@ -1829,11 +1838,11 @@ function buildPackagingTable(data) {
     var rowsTotal = 0;
 
     var keys = ['row', 'menu', 'notes', 'move', 'production_status', 'printing_status', 'orderdate', 'batch', 'serumBatchCode', 'stimulantBatchCode', 'orderID', 'productcode', 'productdescription', 'PRINTCODE', 'priority', 'customer',
-        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'boxname.name', 'starttime', 'CompletionDate', 'final_status', 'Location'
+        'brand', 'bottles', 'btype', 'lid', 'tubeType', 'packagingType.name', 'boxname.name','booklet.name', 'starttime', 'CompletionDate', 'final_status', 'Location'
     ];
 
     var heads = ['Row', 'Menu', 'Notes', 'Move', 'Production Status', 'Printing Status', 'Order Date', 'Batch', 'Serum Batches', 'Stimulant Batches', 'Order ID', 'Code', 'Description', 'Packaging Code', 'Priority', 'Customer', 'Brand',
-        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Outer Box',
+        'Bottles', 'Bottle Type', 'Lid Type', 'Tube Type', 'Pack Type', 'Outer Box', 'Booklet',
         'Start Date', 'Completion Date', 'Packaging Completed', 'Location'
     ];
 
@@ -1912,9 +1921,11 @@ function buildPackagingTable(data) {
                 html += '<td>' + formatDateDisplay(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'packagingType.name') {
                 html += '<td>' + data[i]['packagingType']['name'] + '</td>';
-            } else if (keys[j] == 'boxname.name') {
-                html += '<td>' + data[i]['boxname']['name'] + '</td>';
-            } else if (keys[j] == 'CompletionDate' || keys[j] == 'starttime') {
+            }  else if (keys[j] == 'boxname.name') {
+               html += '<td>' +  (data[i]['boxname']? data[i]['boxname']['name'] : '') + '</td>';
+            } else if (keys[j] == 'booklet.name') {
+               html += '<td>' +  (data[i]['booklet']? data[i]['booklet']['name'] : '') + '</td>';
+            }else if (keys[j] == 'CompletionDate' || keys[j] == 'starttime') {
                 html += '<td>' + formatDateDisplay2(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'move') {
                 html += '<td><button page="Orders" batch="' + data[i].batch + '" onclick="moveUp(this)" id="moveUP"><i class="fa fa-arrow-up" aria-hidden="true"></i></button><button onclick="moveDown(this)" page="Orders" batch="' + data[i].batch + '" id="moveDOWN"><i class="fa fa-arrow-down" aria-hidden="true"></i></button></td>';
@@ -2045,7 +2056,9 @@ function buildShippingTable(data) {
             } else if (keys[j] == 'packagingType.name') {
                 html += '<td>' + data[i]['packagingType']['name'] + '</td>';
             } else if (keys[j] == 'boxname.name') {
-                html += '<td>' + data[i]['boxname']['name'] + '</td>';
+               html += '<td>' +  (data[i]['boxname']? data[i]['boxname']['name'] : '') + '</td>';
+            } else if (keys[j] == 'booklet.name') {
+               html += '<td>' +  (data[i]['booklet']? data[i]['booklet']['name'] : '') + '</td>';
             } else if (keys[j] == 'CompletionDate' || keys[j] == 'starttime') {
                 html += '<td>' + formatDateDisplay2(data[i][keys[j]]) + '</td>';
             } else if (keys[j] == 'move') {
@@ -2510,7 +2523,44 @@ $('#subBoxForm').on('click', function(e) {
     $(special + 'divTubesForBox').val('');
 
 });
+$('#subBookletForm').on('click', function(e) {
 
+    var special = '';
+    if (EDIT_BOOKLET_CONST) {
+
+        special = '.editBookletBody #e';
+    } else {
+        special = '.newBookletBody #';
+    }
+
+    var obj = {
+        sku: $(special + 'bookletSKU').val(),
+        name: $(special + 'bookletName').val(), 
+
+    };
+
+    if (obj.sku == '') {
+        alert('No SKU.');
+        return 0;
+    }
+
+    if (EDIT_BOOKLET_CONST) {
+
+        if (OLDITEM) {
+            if (obj.sku != OLDITEM.sku) {
+                alert('The unique ID can not be edited. \n Other Changes will be saved.');
+                obj.sku = OLDITEM.sku;
+            }
+            OLDITEM = {};
+        }
+    }
+
+    console.log(obj);
+    google.script.run.withSuccessHandler(newbasicitemsuccess).newBasicItem(obj, 'Booklets');
+    $(special + 'bookletSKU').val('');
+    $(special + 'bookletName').val(''); 
+
+});
 $('#subLabelForm').on('click', function(e) {
 
     var special = '';
@@ -3083,6 +3133,11 @@ function buildnewPCD(data) {
         boxSelect += '<option id="' + data.boxes[i].sku + '"  value="' + data.boxes[i].sku + '"  >' + data.boxes[i].name + '<option>';
     }
     $("#newboxname").html(boxSelect);
+    var bookletSelect = '<option id="blank" value=""><option>';
+    for (var i = 0; i < data.booklets.length; i++) {
+        bookletSelect += '<option id="' + data.booklets[i].sku + '"  value="' + data.booklets[i].sku + '"  >' + data.booklets[i].name + '<option>';
+    }
+    $("#newbookletname").html(bookletSelect);
 
     var labelsSelect = '<option id="blank" value=""><option>';
     for (var i = 0; i < data.labels.length; i++) {
@@ -3138,6 +3193,10 @@ $('#save_new_PCD').on('click', function() {
         boxname: {
             sku: $('#newboxname').val(),
             name: $('#newboxname option:selected').text(),
+        },
+        booklet: {
+            sku: $('#newbookletname').val(),
+            name: $('#newbookletname option:selected').text(),
         },
         premixSKUSerum: $('#newpremixSKUSerum').val(),
         premixdescrSerum: $('#newpremixdescrSerum').val(),
@@ -3362,8 +3421,9 @@ function buildeditPCD(arr) {
     if (which == 'EPC') {
         if (EPD) {
             oldPCD = EPC;
-            $("#EPD").val(EPD);
-
+           
+            $("#EPD")[0].value = EPD;
+          
         } else {
             alert("Product Match not found!");
             $("#updating").css("display", "none");
@@ -3381,8 +3441,8 @@ function buildeditPCD(arr) {
             return;
         }
     }
-   $("#EPD").val(oldPCD.desc);
-    $("#EPC").val(oldPCD.prod);
+   $("#EPD").val(oldPCD.productdescription);
+    $("#EPC").val(oldPCD.productcode);
  
     var brandSelect = '<option selected value="' + oldPCD.brandSKU + '">' + oldPCD.brand + '<option>';
     var bottleSelect = '<option selected value="' + oldPCD.botSKU + '">' + oldPCD.btype + '<option>';
@@ -3391,7 +3451,8 @@ function buildeditPCD(arr) {
 
     var LidSelect = '<option selected value="' + oldPCD.lidSKU + '">' + oldPCD.lid + '<option>';
     var packagingSelect = '<option selected id="' + oldPCD.packagingType.sku + '" value="' + oldPCD.packagingType.sku + '">' + oldPCD.packagingType.name + '<option>';
-    var boxSelect = '<option selected id="' + oldPCD.boxname.sku + '" value="' + oldPCD.boxname.sku + '">' + oldPCD.boxname.name + '<option>';
+    var boxSelect = '<option selected id="' + ( oldPCD.boxname ? oldPCD.boxname.sku  : '') + '" value="' + ( oldPCD.boxname ? oldPCD.boxname.sku  : '') + '">' +  ( oldPCD.boxname ? oldPCD.boxname.name  : '') + '<option>';
+    var bookletSelect = '<option selected id="' + ( oldPCD.booklet ? oldPCD.booklet.sku  : '')+ '" value="' + ( oldPCD.booklet ? oldPCD.booklet.sku  : '')+ '">' +  ( oldPCD.booklet ? oldPCD.booklet.name  : '') + '<option>';
 
     var botlabelSelect = '<option selected  value="' + oldPCD.botlabelsku + '">' + oldPCD.botlabel + '<option>';
     var ppbotlabelSelect = '<option selected value="' + oldPCD.ppbotlabelsku + '">' + oldPCD.ppbotlabel + '<option>';
@@ -3429,6 +3490,11 @@ function buildeditPCD(arr) {
         boxSelect += '<option id="' + data.boxes[i].sku + '" value="' + data.boxes[i].sku + '">' + data.boxes[i].name + '<option>';
     }
     $("#editboxname").html(boxSelect);
+    
+    for (var i = 0; i < data.booklets.length; i++) {
+        bookletSelect += '<option id="' + data.booklets[i].sku + '" value="' + data.booklets[i].sku + '">' + data.booklets[i].name + '<option>';
+    }
+    $("#editbookletname").html(bookletSelect);
 
     var labelsSelect = '';
     for (var i = 0; i < data.labels.length; i++) {
@@ -3507,6 +3573,10 @@ $('#save_edit_PCD').on('click', function() {
         boxname: {
             sku: $('#editboxname').val(),
             name: $('#editboxname option:selected').text(),
+        },
+        booklet:{
+            sku: $('#editbookletname').val(),
+            name: $('#editbookletname option:selected').text(),
         },
         premixSKUSerum: $('#editpremixSKUSerum').val(),
         premixdescrSerum: $('#editpremixdescrSerum').val(),
@@ -4273,6 +4343,28 @@ $('#newBoxButton').on('click', function() {
 
 });
 
+
+var EDIT_BOOKLET_CONST = false;
+$('#editBookletButton').on('click', function() {
+    EDIT_BOOKLET_CONST = true;
+    $('.newBookletBody').hide();
+    $('.editBookletBody').show();
+    $("#delete_edit_booklet").show();
+
+    google.script.run.withSuccessHandler(set_active_dropdown_arrays).get_active_dropdown_arrays('editBookletButton');
+
+});
+$('#newBookletButton').on('click', function() {
+    $('.newBookletBody').show();
+    $('.editBookletBody').hide();
+    $("#delete_edit_booklet").hide();
+
+    EDIT_BOOKLET_CONST = false;
+    //google.script.run.withSuccessHandler(set_packages_helper_dropdown).get_packages_helper_dropdown();
+
+});
+
+
 var EDIT_LABEL_CONST = false;
 $('#editLabelButton').on('click', function() {
     EDIT_LABEL_CONST = true;
@@ -4393,9 +4485,11 @@ function showGLOBAL(event) {
             } else {
                 var searchin = RegExp.escape(arr[i].toString());
             }
-            console.log('arr[i]', searchin, 'text', testableRegExp);
+            console.log('arr[i]', searchin);
+            console.log('text', testableRegExp)
 
             if (searchin.match(testableRegExp)) {
+          
                 addValueGLOBAL(arr[i], opt, id);
 
             }
@@ -4416,6 +4510,7 @@ function showGLOBAL(event) {
 }
 
 function addValueGLOBAL(ARR, option, id) {
+    console.log('ARR, option, id',ARR, option, id)
     var createOptions = document.createElement('option');
     var text, value;
     option.appendChild(createOptions);
@@ -4451,6 +4546,16 @@ function addValueGLOBAL(ARR, option, id) {
 
             break;
         case 'eboxSKU':
+            text = ARR.sku;
+            value = ARR.sku;
+            createOptions.setAttribute('key', ARR.sku);
+        case 'ebookletName':
+            text = ARR.name;
+            value = ARR.name;
+            createOptions.setAttribute('key', ARR.sku);
+
+            break;
+        case 'ebookletSKU':
             text = ARR.sku;
             value = ARR.sku;
             createOptions.setAttribute('key', ARR.sku);
@@ -4558,6 +4663,12 @@ function set_remaining_data(data) {
             $('#edivTubesForBox').val(item.divTubesForBox);
 
             break;
+        case 'Booklets':
+        console.log('Booklets',item)
+            $('#ebookletSKU').val(item.sku);
+            $('#ebookletName').val(item.name); 
+
+            break;
         case 'Labels':
             $('#eLabelSKU').val(item.sku);
             $('#eLabelName').val(item.name);
@@ -4626,6 +4737,17 @@ $("#delete_edit_box").on('click', function() {
         $('#eboxName').val('');
         $('#edivTubesForBox').val('');
         $('#newBox').modal('toggle');
+    }
+});
+
+
+$("#delete_edit_booklet").on('click', function() {
+    if (confirm('Are you sure you want to delete this box?')) {
+        var key = $('#ebookletSKU').val();
+        google.script.run.withSuccessHandler(alert_deletion).remove_box(key);
+        $('#ebookletSKU').val('');
+        $('#ebookletName').val(''); 
+        $('#newBooklet').modal('toggle');
     }
 });
 

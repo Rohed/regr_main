@@ -43,7 +43,7 @@ var keys=[['orderdate', 'date'],['notes', 'exists'], ['starttime', 'num'], ['mac
 ['partialPackaging', 'string'], ['MCTval', 'num'], ['row', 'num'], ['menu', 'string'], ['started', 'string'], ['flavourmix.name', 'string'], ['Completed', 'string'],
 ['prodDate', 'date'], ['batches', 'string'], ['MIXNAME', 'string'], ['RECIPE', 'string'], ['FLAVOUR', 'string'], ['orderDates', 'string'], ['QTYTOTAL', 'string'], ['Notes', 'string'],
 ['Location', 'string'], ['factory', 'string'], ['starttime', 'date'], ['CompletionDate', 'date'], ['vgSupplier', 'string'], ['pgSupplier', 'string'], ['nicSupplier', 'string'],
-['flavSupplier', 'string'], ['mixbatch', 'string'], ['numLabelsBottles', 'string'], ['numLabelsTubes', 'string'], ['expDate', 'string'], ['botlabel', 'string'], ['boxname.name', 'string'],
+['flavSupplier', 'string'], ['mixbatch', 'string'], ['numLabelsBottles', 'string'], ['numLabelsTubes', 'string'], ['expDate', 'string'], ['botlabel', 'string'], ['boxname.name', 'string'],['booklet.name', 'string'],
 ['PRINTCODE', 'string'], ['shipping_status', 'string'], ['SHIPPINGCODE', 'string'], ['dateshipped', 'string'], ['trackingNo', 'string'], ['datedelivered', 'string'], ['final_status', 'string']]
 
 

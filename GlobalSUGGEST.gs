@@ -20,6 +20,12 @@ switch (flag){
     retARR.push(['eboxName','DropdownBoxNames','BoxNames',boxes,'Boxes']);
     retARR.push(['eboxSKU','DropdownBoxSKU','BoxSKUS',boxes,'Boxes']);
     break;
+  case 'editBookletButton':
+    var boxes=JSONtoARR(base.getData('Booklets'));
+    
+    retARR.push(['ebookletName','DropdownBookletNames','BookletNames',boxes,'Booklets']);
+    retARR.push(['ebookletSKU','DropdownBookletSKU','BookletSKUS',boxes,'Booklets']);
+    break;
   case 'editLabelButton':
     var labels=JSONtoARR(base.getData('Labels'));
     

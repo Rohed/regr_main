@@ -1,5 +1,5 @@
 var sheets=['MixingTeam','Production','Printing','Labelling','Packaging','Shipping'];
-var QTYSHEETS=['Misc','Packages','Flavours','Labels','Lids','Boxes'];
+var QTYSHEETS=['Misc','Packages','Flavours','Labels','Lids','Boxes','Booklets'];
 
 var RESTORE_PASSWORD = "123";
 var PASSWORD='PASSWORD';

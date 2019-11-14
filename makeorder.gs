@@ -81,6 +81,7 @@ function saveOrder(data, edit, skipRU) {
       }
         data.fill = prod.fill; 
         data.boxname = prod.boxname;
+          data.booklet = prod.booklet;
         if (data.ppb) {
             data.botlabel = prod.ppbotlabel;
             data.botlabelsku = prod.ppbotlabelsku;
@@ -235,6 +236,7 @@ function saveOrderArray(arr) {
           }
           data.fill = prod.fill; 
             data.boxname = prod.boxname;
+            data.booklet = prod.booklet;
             if (data.ppb) {
                 data.botlabel = prod.ppbotlabel;
                 data.botlabelsku = prod.ppbotlabelsku;
