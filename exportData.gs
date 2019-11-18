@@ -1,5 +1,5 @@
 function testExport(){
- var tabs = ['QTY'];
+ var tabs = ['Booklets','PC/PD'];
 export (tabs)
 }
 function export (tabs) {
@@ -329,13 +329,13 @@ function export (tabs) {
             var values = [];
             for (var i = 0; i < data.length; i++) {
                 var row = [];
-                for (var j = 0; j < keyRow.length; j++) {
+                for (var k = 0; k < keyRow.length; k++) {
                     var value = '';
-                    if (keyRow[j].indexOf('.') > -1) {
-                        var item = keyRow[j].split('.');
+                    if (keyRow[k].indexOf('.') > -1) {
+                        var item = keyRow[k].split('.');
                         value = data[i][item[0]] ? data[i][item[0]][item[1]] ? data[i][item[0]][item[1]] : null : null;
                     } else {
-                        value = data[i][keyRow[j]] ? data[i][keyRow[j]] : null;
+                        value = data[i][keyRow[k]] ? data[i][keyRow[k]] : null;
 
                     }
                     row.push(value);
