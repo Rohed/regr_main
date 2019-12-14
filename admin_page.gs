@@ -490,7 +490,7 @@ function updateShippingInformation() {
 }
 
 function updateShippingInformation2(batch) {
-  var suffix = item.batch.substr(-1);
+  var suffix = batch.substr(-1);
   var for_branded_stock = suffix == BRANDED_STOCK_SUFFIX ? true : false;
   if(!for_branded_stock){
     var orders = base.getData('Orders/' + batch);

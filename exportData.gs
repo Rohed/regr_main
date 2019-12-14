@@ -844,7 +844,7 @@ function createCompletedExport(H, name) {
 
     var sheets = ['Orders', 'MixingTeam', 'Production', 'Printing', 'Labelling', 'Packaging', 'Shipping'];
     var keys = [
-        ['orderdate', 'runtime', 'machineP', 'machineL', 'batch', 'orderID', 'productcode', 'productdescription', 'priority', 'customer', 'brand', 'recipe.name', 'flavour.name', 'bottles',
+        ['orderdate', 'runtime', 'machineP', 'machineL', 'batch', 'orderID', 'productcode', 'productdescription', 'priority', 'customer', 'brand', 'bottles',
             'stocking', 'btype', 'lid', 'packagingType.name',   'flavvalue', 'VGval', 'AGval', 'PGval', 'Nico', 'Nicosalts', 'CBDvalue', 'MCTval', 'mixing', 'premixed',
             'unbranded', 'branded', 'backtubed', 'mixing_status', 'production_status', 'printing_status', 'labeling_status', 'packaging_status', 'final_status', 'CompletionDate', 'partialProduction', 'partialPackaging', 'TOTAL BOTTLES'
         ],

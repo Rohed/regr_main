@@ -159,6 +159,11 @@ function checkPackagePrinting(SELECTED, force) {
     }
 }
 
+function TESTPRINT(){
+
+printPackagingBatches(['916242'], true)
+}
+
 function printPackagingBatches(SELECTED, force) {
     if (!force) {
         var printItems = checkPackagePrinting(SELECTED, force);
@@ -176,14 +181,15 @@ function printPackagingBatches(SELECTED, force) {
     for (var i = 0; i < SELECTED.length; i++) {
 
         var data = base.getData('Packaging/' + SELECTED[i]);
+        var order = base.getData('Orders/'+ SELECTED[i]);
         if (!data) {
             continue;
         }
         file.replaceText('«date»', formattedDate);
         file.replaceText('«BoxNo»', PRINTCODE);
 
-        file.replaceText('«Product_Code' + (i + 1) + '»', data.orderID);
-        file.replaceText('«Product_Description' + (i + 1) + '»', SELECTED[i] + ',' + data.brand + ',' + data.recipe.name + ',' + data.flavour.name);
+        file.replaceText('«Product_Code' + (i + 1) + '»', order.orderID);
+        file.replaceText('«Product_Description' + (i + 1) + '»', SELECTED[i] + ',' + data.productdescription );
         file.replaceText('«Ordered' + (i + 1) + '»', data.bottles);
 
         dat1 = {
@@ -563,7 +569,7 @@ function printOrdersBatches(SELECTED) {
             //        data.packaging_status = 0;
             //        
 
-            values.push([formatDateDisplay(data[i].orderdate), data[i].batch, data[i].orderID, data[i].productcode, data[i].productdescription, data[i].customer, data[i].brand, data[i].recipe.name, data[i].flavour.name,
+            values.push([formatDateDisplay(data[i].orderdate), data[i].batch, data[i].orderID, data[i].productcode, data[i].productdescription, data[i].customer, data[i].brand,
                 data[i].bottles, data[i].btype, data[i].lid, data[i].packagingType.name,
                 data[i].mixing, data[i].premixed, data[i].unbranded, data[i].branded, data[i].backtubed, data[i].final_status, data[i].mixing_status, data[i].production_status, data[i].printing_status, data[i].labeling_status, data[i].packaging_status
             ]);

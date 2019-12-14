@@ -56,6 +56,7 @@ function toPrinting(data) {
         ppb: data.ppb,
         customerSKU: data.customerSKU,
         brandSKU: data.brandSKU,
+           orderID: data.orderID,
     };
     base.updateData('Printing/' + data.batch, dat1);
 }
@@ -118,6 +119,7 @@ function toLabelling(data) {
         ppb: data.ppb,
         customerSKU: data.customerSKU,
         brandSKU: data.brandSKU,
+         orderID: data.orderID,
     };
     base.updateData('Labelling/' + data.batch, dat1);
 }
@@ -176,6 +178,7 @@ function toProduction(data) {
         'productdescription': data.productdescription,
         customerSKU: data.customerSKU,
         brandSKU: data.brandSKU,
+         orderID: data.orderID,
     };
     if (data.final_status) {
         dat1.final_status = data.final_status;
@@ -245,6 +248,7 @@ function toPackaging(data) {
         'productdescription': data.productdescription,
         customerSKU: data.customerSKU,
         brandSKU: data.brandSKU,
+         orderID: data.orderID,
     };
     base.updateData('Packaging/' + data.batch, dat1);
 }

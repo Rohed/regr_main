@@ -1,10 +1,10 @@
 function testsave() {
-    var sheet = 'Production';
+    var sheet = 'Packaging';
     var obj = {
         Location: 'Location',
         CompletionDate: 'CompletionDate',
-        Completed: 'Completed and Labelled',
-        batch: ('911000B').toString(),
+        Completed: 'Completed',
+        batch: ('916220').toString(),
        prodBottles:650
 
     };
