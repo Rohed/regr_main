@@ -192,11 +192,10 @@ function printPackagingBatches(SELECTED, force) {
         file.replaceText('«Product_Description' + (i + 1) + '»', SELECTED[i] + ',' + data.productdescription );
         file.replaceText('«Ordered' + (i + 1) + '»', data.bottles);
 
-        dat1 = {
-            PRINTCODE: PRINTCODE
-        }
-        base.updateData('Shipping/' + SELECTED[i], dat1);
-        base.updateData('Packaging/' + SELECTED[i], dat1);
+     
+        order.PRINTCODE = PRINTCODE
+        base.updateData('Shipping/' + SELECTED[i], order);
+        base.updateData('Packaging/' + SELECTED[i], order);
     }
     for (; i < 21; i++) {
         file.replaceText('«Product_Code' + (i + 1) + '»', '');
@@ -214,15 +213,24 @@ function printPackagingBatches(SELECTED, force) {
 
 
 
-function testPrintShippingNotes() {
+function TESTPrintShippingNotes() {
     var orders = JSONtoARR(base.getData('Orders'));
     var filtered = orders.filter(function(item) {
         return !item.PRINTCODE
     })
 
-    printShippingNote(['71474925', '4670815', '27656320'], 1);
+    printShippingNote(['24513446'], 1);
 }
-
+function findNNULL(){
+var code = '24513446';
+var shipping = base.getData('Shipping')
+var keys = Object.keys(shipping);
+keys.map(function(item){
+  if(!shipping[item].batch){
+  Logger.log(item);
+  }
+})
+}
 
 function printShippingNote(data, x) {
     var orderIDs = [];
@@ -253,9 +261,8 @@ function printShippingNote(data, x) {
     for (var i = 0; i < data.length; i++) {
         for (var j = 0; j < list.length; j++) {
 
-            if (data[i] == list[j].PRINTCODE) {
-
-
+            if (data[i] == list[j].PRINTCODE && list[j].batch) {
+ 
 
                 if (orders[list[j].batch]) {
 
@@ -297,7 +304,7 @@ function printShippingNote(data, x) {
 
                     }
                 } else {
-                    incomplete.push([data[i], list[j].batch + ' ' + list[j].productcode + ' ' + list[j].productdescription, packagingData[list[j].batch].bottles, '', packagingData[list[j].batch].bottles]);
+                    incomplete.push([data[i], list[j].batch + ' ' + list[j].productcode + ' ' + list[j].productdescription, (packagingData[list[j].batch] ? packagingData[list[j].batch].bottles : orders[list[j].batch].bottles), '',  (packagingData[list[j].batch] ? packagingData[list[j].batch].bottles : orders[list[j].batch].bottles)]);
                 }
             }
 
